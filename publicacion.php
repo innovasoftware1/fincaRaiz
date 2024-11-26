@@ -129,13 +129,13 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                         </div>
                         <div class="dato">
                             <span class="header">
-                                <i class="fa-solid fa-city"><span>Ciudad</span></i> <!-- Ícono de ciudad -->
+                                <i class="fa-solid fa-city"><span>Ciudad/Pueblo</span></i> <!-- Ícono de ciudad -->
                             </span>
                             <span class="valor"><?php echo obtenerCiudad($propiedad['ciudad']) ?></span>
                         </div>
                         <div class="dato">
                             <span class="header">
-                                <i class="fa-solid fa-flag"><span>Pais</span></i> <!-- Ícono de país -->
+                                <i class="fa-solid fa-flag"><span>Departamento</span></i> <!-- Ícono de país -->
                             </span>
                             <span class="valor"><?php echo obtenerPais($propiedad['pais']) ?></span>
                         </div>
