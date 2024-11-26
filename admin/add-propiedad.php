@@ -1,37 +1,22 @@
 <?php
-
-/********************************************************/
-//SELECCIONAMOS LOS TIPOS DE PROPIEDADES
-//nos conectamos a la base de datos
 include("conexion.php");
 
-//Armamos el query para seleccionar los tipos
 $query = "SELECT * FROM tipos";
 
-//Ejecutamos la consulta
 $resultado_tipos = mysqli_query($conn, $query);
-/******************************************************/
-
-/********************************************************/
-//SELECCIONAMOS LOS PAISES
-//nos conectamos a la base de datos
 include("conexion.php");
 
-//Armamos el query para seleccionar los paises
-$query = "SELECT * FROM paises";
+$query = "SELECT * FROM departamentos";
 
 //Ejecutamos la consulta
-$resultado_paises = mysqli_query($conn, $query);
-/********************************************************/
+$resultado_departamentos = mysqli_query($conn, $query);
 
-
-/******************************************************* */
-//GUARDAMOS LA PROPIEDAD
+//guaadnos propiedad
 if (isset($_POST['agregar'])) {
     //nos conectamos a la base de datos
     include("conexion.php");
 
-    //tomamos los datos que vienen del formulario
+    //datos del formulario
     $id = $_POST['id'];
     $titulo = $_POST['titulo'];
     $descripcion = $_POST['descripcion'];
@@ -47,7 +32,7 @@ if (isset($_POST['agregar'])) {
     $moneda = $_POST['moneda'];
     $url_foto_principal = "url";
     $url_galeria = "url";
-    $pais = $_POST['pais'];
+    $departamento = $_POST['departamento'];
     $ciudad = $_POST['ciudad'];
     $propietario = $_POST['nombre_propietario'];
     $telefono_propietario = $_POST['telefono_propietario'];
@@ -61,14 +46,14 @@ if (isset($_POST['agregar'])) {
     $video_url = $_POST['video_url'];
     $recorrido_360_url = $_POST['recorrido_360_url'];
     $ubicacion_url = $_POST['ubicacion_url'];
+    $dimensiones_tipo = $_POST['dimensiones_tipo'];
 
 
 
     //armamos el query para insertar en la tabla propiedades
-    $query = "INSERT INTO propiedades (id, fecha_alta, titulo, descripcion, tipo, estado, ubicacion, habitaciones, banios, pisos, garage, dimensiones, precio, moneda,  url_foto_principal, pais, ciudad, propietario, telefono_propietario, agua, luz, gas, internet, clima, documentos_transferencia, permuta, video_url, recorrido_360_url, ubicacion_url)
-    VALUES ('$id',CURRENT_TIMESTAMP, '$titulo', '$descripcion','$tipo','$estado','$ubicacion','$habitaciones','$banios','$pisos','$garage','$dimensiones','$precio', '$moneda', '', '$pais','$ciudad','$propietario','$telefono_propietario' ,'$agua' ,'$luz'  ,'$gas','$internet', '$clima', '$documentos_transferencia', '$permuta', '$video_url', '$recorrido_360_url','$ubicacion_url')";
+    $query = "INSERT INTO propiedades (id, fecha_alta, titulo, descripcion, tipo, estado, ubicacion, habitaciones, banios, pisos, garage, dimensiones, precio, moneda,  url_foto_principal, departamento, ciudad, propietario, telefono_propietario, agua, luz, gas, internet, clima, documentos_transferencia, permuta, video_url, recorrido_360_url, ubicacion_url, dimensiones_tipo)
+    VALUES ('$id',CURRENT_TIMESTAMP, '$titulo', '$descripcion','$tipo','$estado','$ubicacion','$habitaciones','$banios','$pisos','$garage','$dimensiones','$precio', '$moneda', '', '$departamento','$ciudad','$propietario','$telefono_propietario' ,'$agua' ,'$luz'  ,'$gas','$internet', '$clima', '$documentos_transferencia', '$permuta', '$video_url', '$recorrido_360_url','$ubicacion_url','$dimensiones_tipo')";
 
-    //insertamos en la tabla propiedades
     if (mysqli_query($conn, $query)) { //Se insertó correctamente
         include("procesar-foto-principal.php");
         include("procesar-fotos-galeria.php");
@@ -77,9 +62,6 @@ if (isset($_POST['agregar'])) {
         $mensaje = "No se pudo insertar en la BD" . mysqli_error($conn);
     }
 }
-
-
-/******************************************************* */
 
 
 ?>
@@ -142,7 +124,7 @@ if (isset($_POST['agregar'])) {
 
                     <div class="fila-una-colummna">
                         <label for="descripcion">Descripción de la Propiedad</label>
-                        <textarea name="descripcion" id="" cols="30" rows="10" class="input-entrada-texto" placeholder="Descripcion detallada de la propiedad e inventario de la misma..."  style="resize: none;"></textarea>
+                        <textarea name="descripcion" id="" cols="30" rows="10" class="input-entrada-texto" placeholder="Descripcion detallada de la propiedad e inventario de la misma..." style="resize: none;"></textarea>
                     </div>
                     <br>
                     <br>
@@ -161,10 +143,10 @@ if (isset($_POST['agregar'])) {
                         </div>
 
                         <div class="box">
-                            <label for="estado">Elija estado de la propiedad</label>
+                            <label for="estado">Elija el tipo de clasificacion</label>
                             <select name="estado" id="" class="input-entrada-texto">
-                                <option value="Venta">Venta</option>
-                                <option value="Proyecto">Proyecto</option>
+                                <option value="Urbano">Urbano</option>
+                                <option value="Campestre">Campestre</option>
                             </select>
                         </div>
 
@@ -176,17 +158,17 @@ if (isset($_POST['agregar'])) {
 
                     <div class="fila">
                         <div class="box">
-                            <label for="habitaciones">Habitaciones</label>
+                            <label for="habitaciones">No. Habitaciones</label>
                             <input type="number" name="habitaciones" class="input-entrada-texto" placeholder="Cantidad numérica" min="0" max="9" required>
                         </div>
 
                         <div class="box">
-                            <label for="baños">Baños</label>
+                            <label for="baños">No. Baños</label>
                             <input type="number" name="banios" class="input-entrada-texto" placeholder="Cantidad numerica" min="0" max="9" required>
                         </div>
 
                         <div class="box">
-                            <label for="pisos">Pisos</label>
+                            <label for="pisos">No. Pisos</label>
                             <input type="number" name="pisos" class="input-entrada-texto" placeholder="Cantidad numerica" min="0" max="9" required>
                         </div>
                     </div>
@@ -206,19 +188,29 @@ if (isset($_POST['agregar'])) {
                         </div>
 
                         <div class="box">
-                            <label for="precio">Precio (Venta)</label>
-                            <input type="text" name="precio" class="input-entrada-texto" required placeholder="Precio sin signos de putnuaciòn">
-                        </div>
+                                <label for="dimensiones_tipo">Medida de area</label>
+                                <select name="dimensiones_tipo" id="" class="input-entrada-texto">
+                                    <option value="Mts²">Mts²</option>
+                                    <option value="Fanegadas">Fanegadas</option>
+                                    <option value="Hectareas">Hectareas</option>
+                                </select>
+                            </div>
                     </div>
 
                     <div class="fila">
                         <div class="box">
-                            <label for="moneda">Moneda</label>
-                            <input type="text" name="moneda" class="input-entrada-texto" required value="$">
+                            <label for="precio">Precio (Venta)</label>
+                            <input type="text" name="precio" class="input-entrada-texto" required placeholder="Precio sin signos de puntuaciòn">
                         </div>
+
+                        <div class="box">
+                            <label for="moneda">Moneda</label>
+                            <input type="text" name="moneda" class="input-entrada-texto" required value="$" readonly>
+                        </div>
+
                         <div class="box">
                             <label for="ubicacion_url">Url ubicacion</label>
-                            <input type="text" name="ubicacion_url" class="input-entrada-texto" required placeholder="Ingrese la url de MAPS de la propiedad">
+                            <input type="text" name="ubicacion_url" class="input-entrada-texto" required placeholder="Ingrese la iframe de MAPS de la propiedad">
                         </div>
                     </div>
 
@@ -335,26 +327,26 @@ if (isset($_POST['agregar'])) {
                     <hr>
                     <div class="fila">
                         <div class="box">
-                            <label for="pais">Seleccione País de la Propiedad</label>
-                            <select name="pais" id="" onchange="muestraselect(this.value)" class="input-entrada-texto">
-                                <option value="">Seleccione pais</option>
-                                <?php while ($row = mysqli_fetch_assoc($resultado_paises)) : ?>
+                            <label for="departamento">Seleccione Depart. de la Propiedad</label>
+                            <select name="departamento" id="" onchange="muestraselect(this.value)" class="input-entrada-texto">
+                                <option value="">Seleccione departamento</option>
+                                <?php while ($row = mysqli_fetch_assoc($resultado_departamentos)) : ?>
                                     <option value="<?php echo $row['id'] ?>">
-                                        <?php echo $row['nombre_pais'] ?>
+                                        <?php echo $row['nombre_departamento'] ?>
                                     </option>
                                 <?php endwhile ?>
                             </select>
                         </div>
                         <div class="box">
                             <label for="ciudad">Seleccione una ciudad</label>
-                            <select name="ciudad" id="ciudad" class="input-entrada-texto">
+                            <select name="ciudad" id="ciudad" class="input-entrada-texto" required>
 
                             </select>
                         </div>
 
                         <div class="box">
                             <label for="propietario">Nombre del propietario</label>
-                            <input type="text" name="nombre_propietario" class="input-entrada-texto" placeholder="Nombres y apellidos">
+                            <input type="text" name="nombre_propietario" class="input-entrada-texto" placeholder="Nombres y apellidos" required>
                         </div>
 
                     </div>
@@ -366,7 +358,7 @@ if (isset($_POST['agregar'])) {
 
                         <div class="box">
                             <label for="telefono_propietario">Teléfono del propietario</label>
-                            <input type="text" name="telefono_propietario" class="input-entrada-texto" placeholder="Telefono celular" pattern="^\d{10}$" maxlength="10" minlength="10" required>
+                            <input type="text" name="telefono_propietario" class="input-entrada-texto" placeholder="Telefono celular, sin indicativo" pattern="^\d{10}$" maxlength="10" minlength="10" required>
                         </div>
 
                         <div class="box">
@@ -382,25 +374,36 @@ if (isset($_POST['agregar'])) {
 
                 </form>
 
+                <?php if (isset($_POST['agregar'])) : ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Propiedad Agregada!',
+                            text: '<?php echo $mensaje; ?>',
+                            showConfirmButton: false,
+                            timer: 3000
+                        }).then(function() {
+                            window.location.href = 'listado-propiedades.php';
+                        });
+                    </script>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>
 
-    <?php if (isset($_POST['agregar'])) : ?>
-        <script>
-            alert("<?php echo $mensaje ?>");
-            window.location.href = 'index.php';
-        </script>
-    <?php endif ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $('#link-add-propiedad').addClass('pagina-activa');
     </script>
-
+    <!-- scripts para procesar galerias (video,imagens, recorrido360) prpiedad -->
     <script src="subirfoto.js"></script>
     <script src="scriptFotos.js"></script>
     <script src="subir_v_r.js"></script>
     <script src="vista_recorrido_video.js"></script>
+    <!-- **NOTA:** pendiente script de alerta SW2 (eliminar - agregar) -->
+    <!-- ****************************************************************** -->
 </body>
 
 </html>

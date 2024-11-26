@@ -12,7 +12,7 @@ $rol = $_SESSION['rol_id'];
 
 $totalPropiedades = obtenerTotalRegistros('propiedades');
 $totalTipos = obtenerTotalRegistros('tipos');
-$totalPaises = obtenerTotalRegistros('paises');
+$totalDepartamentos = obtenerTotalRegistros('departamentos');
 $totaCiudades = obtenerTotalRegistros('ciudades');
 ?>
 <!DOCTYPE html>
@@ -100,12 +100,12 @@ $totaCiudades = obtenerTotalRegistros('ciudades');
                         <hr>
                         <a href="listado-tipo-propiedades.php">Ver Detalles</a>
                     </div>
-                    <div class="caja-info paises">
-                        <p>Total Paises</p>
+                    <div class="caja-info departamentos">
+                        <p>Total departamentos</p>
                         <hr>
-                        <span class="dato"><?php echo $totalPaises ?></span>
+                        <span class="dato"><?php echo $totalDepartamentos ?></span>
                         <hr>
-                        <a href="listado-paises.php">Ver Detalles</a>
+                        <a href="listado-departamentos.php">Ver Detalles</a>
                     </div>
                     <div class="caja-info ciudades">
                         <p>Total Ciudades</p>
@@ -151,7 +151,7 @@ $totaCiudades = obtenerTotalRegistros('ciudades');
         var graficoLineas = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Propiedades', 'Tipos', 'Paises', 'Ciudades'],
+                labels: ['Propiedades', 'Tipos', 'Departamentos', 'Ciudades'],
                 datasets: [{
                         label: 'Propiedades',
                         data: [<?php echo $totalPropiedades ?>, 0, 0, 0],
@@ -167,8 +167,8 @@ $totaCiudades = obtenerTotalRegistros('ciudades');
                         tension: 0.1
                     },
                     {
-                        label: 'Paises',
-                        data: [0, 0, <?php echo $totalPaises ?>, 0],
+                        label: 'Departamentos',
+                        data: [0, 0, <?php echo $totalDepartamentos ?>, 0],
                         fill: false,
                         borderColor: 'rgb(75, 192, 192)',
                         tension: 0.1

@@ -3,30 +3,25 @@
 function obtenerConfiguracion()
 {
     include("admin/conexion.php");
-    // Comprobamos si existe el registro 1 que mantiene la configuración
-    // Añadimos un alias AS total para identificar más fácil
     $query = "SELECT COUNT(*) AS total FROM configuracion";
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
 
     if ($row['total'] == '0') {
         echo "Valor" . $row['total'];
-        // No existe el registro 1 - DEBO INSERTAR el registro por primera vez
         $query = "INSERT INTO configuracion (id, user, password)
                   VALUES (NULL, 'admin', 'admin')";
 
-        if (mysqli_query($conn, $query)) { // Se insertó correctamente
+        if (mysqli_query($conn, $query)) { 
         } else {
             echo "No se pudo insertar en la BD" . mysqli_error($conn);
         }
     }
 
-    // El registro
     $query = "SELECT * FROM configuracion WHERE id='1'";
     $result = mysqli_query($conn, $query);
     $config = mysqli_fetch_assoc($result);
 
-    // Verificamos si la configuración existe
     if (!$config) {
         echo "No se pudo obtener la configuración.";
         return null;
@@ -56,7 +51,6 @@ function cargarPropiedades($limInferior)
     include("admin/conexion.php");
     $config = obtenerConfiguracion();
 
-    // Verifica si $config es un arreglo válido
     if (!$config) {
         echo "No se pudo obtener la configuración.";
         return null;
@@ -66,8 +60,7 @@ function cargarPropiedades($limInferior)
         $query = "SELECT * FROM propiedades ORDER BY fecha_alta DESC LIMIT $limInferior, 6";
         $result = mysqli_query($conn, $query);
         return $result;
-    } else { // Visualizamos las primeras propiedades de forma personalizada
-        // Asegúrate de que las propiedades están bien definidas en $config
+    } else { 
         $query = "SELECT * FROM propiedades WHERE id IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
                   UNION
                   SELECT * FROM propiedades WHERE id NOT IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
@@ -81,10 +74,8 @@ function obtenerPropiedadPorId($id_propiedad)
 {
     include("admin/conexion.php");
 
-    // Armamos el query para seleccionar la propiedad
     $query = "SELECT * FROM propiedades WHERE id='$id_propiedad'";
 
-    // Ejecutamos la consulta
     $resultado_propiedad = mysqli_query($conn, $query);
     $propiedad = mysqli_fetch_assoc($resultado_propiedad);
     return $propiedad;
@@ -102,23 +93,22 @@ function obtenerCiudad($id_ciudad)
     if ($row) {
         return $row['nombre_ciudad'];
     } else {
-        return "Ciudad no encontrada";  // O alguna otra lógica que desees para manejar los errores
+        return "Ciudad no encontrada";  
     }
 }
 
-function obtenerPais($id_pais)
+function obtenerDepartamento($id_Departamento)
 {
     include("admin/conexion.php");
-    $query = "SELECT * FROM paises WHERE id='$id_pais'";
+    $query = "SELECT * FROM departamentos WHERE id='$id_Departamento'";
 
-    // Ejecutamos la consulta
-    $resultado_pais = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($resultado_pais);
+    $resultado_Departamento = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($resultado_Departamento);
 
     if ($row) {
-        return $row['nombre_pais'];
+        return $row['nombre_departamento'];
     } else {
-        return "País no encontrado";  // O alguna otra lógica que desees para manejar los errores
+        return "País no encontrado";  
     }
 }
 
@@ -127,7 +117,6 @@ function obtenerFotosGaleria($id_propiedad)
     include("admin/conexion.php");
     $query = "SELECT * FROM fotos WHERE id_propiedad='$id_propiedad'";
 
-    // Ejecutamos la consulta
     $resultado_fotos = mysqli_query($conn, $query);
     return $resultado_fotos;
 }
@@ -136,40 +125,27 @@ function obtenerTipo($id_tipo)
 {
     include("admin/conexion.php");
 
-    // Verifica si $id_tipo no está vacío
     if (empty($id_tipo)) {
         return "Tipo no proporcionado";
     }
 
-    // Limpia el valor de $id_tipo para evitar problemas con espacios en blanco
     $id_tipo = trim($id_tipo);
-
-    // Verificar el valor de $id_tipo antes de realizar la consulta (por depuración)
-    // echo "ID_Tipo: $id_tipo"; // Puedes descomentar esto para depurar
-
-    // Usamos una consulta preparada para evitar inyecciones SQL
     $query = "SELECT * FROM tipos WHERE id = ?";
 
-    // Preparamos la consulta
     if ($stmt = mysqli_prepare($conn, $query)) {
-        // Enlazamos el parámetro $id_tipo a la consulta
-        mysqli_stmt_bind_param($stmt, "s", $id_tipo); // "s" indica que $id_tipo es un string
+        mysqli_stmt_bind_param($stmt, "s", $id_tipo); 
 
-        // Ejecutamos la consulta
         mysqli_stmt_execute($stmt);
 
-        // Obtenemos el resultado
         $resultado_tipo = mysqli_stmt_get_result($stmt);
         $row = mysqli_fetch_assoc($resultado_tipo);
 
-        // Si encontramos un tipo
         if ($row) {
             return $row['nombre_tipo'];
         } else {
             return "Tipo no encontrado";
         }
 
-        // Cerramos la declaración preparada
         mysqli_stmt_close($stmt);
     } else {
         return "Error en la preparación de la consulta: " . mysqli_error($conn);
@@ -187,63 +163,53 @@ function pluralToSingular($word) {
 }
 
 
-function realizarBusqueda($id_ciudad, $id_tipo, $estado, $busqueda)
+function realizarBusqueda($id_ciudad, $id_tipo, $estado)
 {
     include("admin/conexion.php");
 
-    $busqueda = strtolower(trim($busqueda));
-    $busqueda_singular = pluralToSingular($busqueda);
-
-    $query = "SELECT * FROM propiedades WHERE 1=1";
-
-    if (!empty($busqueda)) {
-        $no_results = true;
-
-        $result_ciudades = obtenerTodasLasCiudades();
-        while ($ciudad = mysqli_fetch_assoc($result_ciudades)) {
-            if (stripos(strtolower($ciudad['nombre_ciudad']), $busqueda) !== false || stripos(strtolower($ciudad['nombre_ciudad']), $busqueda_singular) !== false) {
-                $id_ciudad = $ciudad['id'];
-                $no_results = false;
-                break;
-            }
-        }
-
-        if (empty($id_ciudad)) {
-            $result_tipos = obtenerTodosLosTipos();
-            while ($tipo = mysqli_fetch_assoc($result_tipos)) {
-                if (stripos(strtolower($tipo['nombre_tipo']), $busqueda) !== false || stripos(strtolower($tipo['nombre_tipo']), $busqueda_singular) !== false) {
-                    $id_tipo = $tipo['id'];
-                    $no_results = false;
-                    break;
-                }
-            }
+    $conditions = [];
+    
+    if ($id_ciudad) {
+        if (is_array($id_ciudad)) {
+            $id_ciudad = implode(',', array_map('intval', $id_ciudad));
+            $conditions[] = "ciudad IN ($id_ciudad)";
+        } else {
+            $conditions[] = "ciudad = '$id_ciudad'";
         }
     }
 
-    if (empty($busqueda)) {
-        $estado = !empty($estado) ? $estado : 'Venta';
-        $query .= " AND estado = '$estado'";
+    if ($id_tipo) {
+        if (is_array($id_tipo)) {
+            $id_tipo = implode(',', array_map('intval', $id_tipo));
+            $conditions[] = "tipo IN ($id_tipo)";
+        } else {
+            $conditions[] = "tipo = '$id_tipo'";
+        }
     }
 
-    if (!empty($id_ciudad)) {
-        $query .= " AND LOWER(ciudad) = LOWER('$id_ciudad')";
+    if ($estado) {
+        if (is_array($estado)) {
+            $estado = "'" . implode("','", array_map(function($item) use ($conn) {
+                return mysqli_real_escape_string($conn, $item);  // Ahora escapamos correctamente
+            }, $estado)) . "'";
+            $conditions[] = "estado IN ($estado)";
+        } else {
+            $conditions[] = "estado = '$estado'";
+        }
     }
 
-    if (!empty($id_tipo)) {
-        $query .= " AND LOWER(tipo) = LOWER('$id_tipo')";
-    }
+    $where = implode(' AND ', $conditions);
+    
+    $query = "SELECT * FROM propiedades" . (count($conditions) ? " WHERE $where" : "");
 
-    if (!empty($estado)) {
-        $query .= " AND estado = '$estado'";
-    }
-
-    $resultado_propiedades = mysqli_query($conn, $query);
-
-    if (mysqli_num_rows($resultado_propiedades) === 0) {
-        return null;
-    }
-
-    return $resultado_propiedades;
+    return mysqli_query($conn, $query);
 }
 
 
+function obtenerPropiedades()
+{
+    include("admin/conexion.php");
+    $query = "SELECT * FROM propiedades";
+    $result = mysqli_query($conn, $query);
+    return $result;
+}

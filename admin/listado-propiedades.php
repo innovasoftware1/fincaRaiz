@@ -59,7 +59,7 @@ $result = obtenerTodasLasPropiedades();
                     <!-- Tabla de propiedades -->
                     <table id="myTable">
                         <tr>
-                            <th>#ID</th>
+                            <th>Cedula</th>
                             <th>Título</th>
                             <th>Tipo</th>
                             <th>Estado</th>
@@ -95,6 +95,8 @@ $result = obtenerTodasLasPropiedades();
         </div>
     </div>
     <script>
+        $('#link-listado-propiedades').addClass('pagina-activa');
+
         function confirmarEliminacion(idPropiedad) {
             Swal.fire({
                 title: '¿Estás seguro?',

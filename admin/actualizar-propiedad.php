@@ -5,24 +5,16 @@ if (!$_SESSION['usuarioLogeado']) {
     header("Location:login.php");
 }
 
-
-
-//funcion que me perimete obtener una propiedad por id
-
 function obtenerPropiedadPorId($id_propiedad)
 {
-    //Obtenemos la propiedad en base al id que recibimos por GET
     include("conexion.php");
 
-    //Armamos el query para seleccionar la propiedad
     $query = "SELECT * FROM propiedades WHERE id='$id_propiedad'";
 
-    //Ejecutamos la consulta
     $resultado_propiedad = mysqli_query($conn, $query);
     $propiedad = mysqli_fetch_assoc($resultado_propiedad);
     return $propiedad;
 }
-//tomo el id que me recibí y busco la propiedad
 $id_propiedad = $_GET['id'];
 $propiedad = obtenerPropiedadPorId($id_propiedad);
 
@@ -32,58 +24,34 @@ function obtenerFotosGaleriaDePropiedad($id_propiedad)
 {
     include("conexion.php");
 
-    //Armamos el query para seleccionar las fotos
     $query = "SELECT * FROM fotos WHERE id_propiedad='$id_propiedad'";
 
-    //Ejecutamos la consulta
     $galeria = mysqli_query($conn, $query);
     return $galeria;
 }
 
-/********************************************************/
-//SELECCIONAMOS LOS TIPOS DE PROPIEDADES
-//nos conectamos a la base de datos
 include("conexion.php");
 
-//Armamos el query para seleccionar los tipos
 $query = "SELECT * FROM tipos";
 
-//Ejecutamos la consulta
 $resultado_tipos = mysqli_query($conn, $query);
-/******************************************************/
 
-/********************************************************/
-//SELECCIONAMOS LOS PAISES
-//nos conectamos a la base de datos
 include("conexion.php");
 
-//Armamos el query para seleccionar los paises
-$query = "SELECT * FROM paises";
+$query = "SELECT * FROM departamentos";
 
-//Ejecutamos la consulta
-$resultado_paises = mysqli_query($conn, $query);
-/********************************************************/
+$resultado_departamentos = mysqli_query($conn, $query);
 
-/********************************************************/
-//SELECCIONAMOS LAS CIUDADES
-//nos conectamos a la base de datos
 include("conexion.php");
 
-//Armamos el query para seleccionar los paises
-$query = "SELECT * FROM ciudades WHERE id_pais='$propiedad[pais]'";
+$query = "SELECT * FROM ciudades WHERE id_departamento='$propiedad[departamento]'";
 
-//Ejecutamos la consulta
 $resultado_ciudades = mysqli_query($conn, $query);
-/********************************************************/
 
-
-/******************************************************* */
-//GUARDAMOS LA PROPIEDAD
 if (isset($_POST['actualizar'])) {
-    //nos conectamos a la base de datos
+
     include("conexion.php");
 
-    //tomamos los datos que vienen del formulario
     $id_propiedad = $_POST['id'];
     $id = $_POST['id'];
     $titulo = $_POST['titulo'];
@@ -99,7 +67,7 @@ if (isset($_POST['actualizar'])) {
     $precio = $_POST['precio'];
     $moneda = $_POST['moneda'];
     $url_galeria = "url";
-    $pais = $_POST['pais'];
+    $departamento = $_POST['departamento'];
     $ciudad = $_POST['ciudad'];
     $propietario = $_POST['nombre_propietario'];
     $telefono_propietario = $_POST['telefono_propietario'];
@@ -113,10 +81,9 @@ if (isset($_POST['actualizar'])) {
     $video_url = $_POST['video_url'];
     $recorrido_360_url = $_POST['recorrido_360_url'];
     $ubicacion_url = $_POST['ubicacion_url'];
+    $dimension_tipo = $_POST['dimensiones_tipo'];
 
 
-    //armamos el query para insertar en la tabla propiedades
-    ///S E G U I R A Q U I!!!!!!!!!!!!!!!!!!!!
     $query = "UPDATE propiedades SET
      id='$id', 
      titulo='$titulo', 
@@ -131,7 +98,7 @@ if (isset($_POST['actualizar'])) {
      dimensiones='$dimensiones', 
      precio='$precio',
      moneda='$moneda', 
-     pais='$pais',
+     departamento='$departamento',
      ciudad='$ciudad',
      propietario='$propietario',
      telefono_propietario='$telefono_propietario',
@@ -144,25 +111,22 @@ if (isset($_POST['actualizar'])) {
      permuta='$permuta',
      video_url='$video_url',
      recorrido_360_url='$recorrido_360_url',
-     ubicacion_url='$ubicacion_url'
+     ubicacion_url='$ubicacion_url',
+     dimensiones_tipo='$dimensiones_tipo'
 
      WHERE id='$id_propiedad'";
 
-    //insertamos en la tabla propiedades
-    if (mysqli_query($conn, $query)) { //Se insertó correctamente
+    if (mysqli_query($conn, $query)) {
 
-        //Actualizamos la foto principal en caso que la haya cambiado
         if ($_POST['fotoPrincipalActualizada'] == "si") {
             include("actualizar-foto-principal.php");
         }
 
         if ($_POST['fotosGaleriaActualizada'] == "si") {
-            //Agrego las fotos nuevas
             $id_ultima_propiedad = $id_propiedad;
             include("procesar-fotos-galeria.php");
         }
 
-        //Prgunto si se eliminarion fotos
         $idsFotos =  $_POST['fotosAEliminar'];
         if ($idsFotos != "") {
             include("eliminar-fotos-de-galeria.php");
@@ -325,12 +289,27 @@ if (isset($_POST['actualizar'])) {
                         </div>
 
                         <div class="box">
-                            <label for="precio">Precio (Alquiler o Venta)</label>
-                            <input type="text" name="precio" value="<?php echo $propiedad['precio'] ?>" class="input-entrada-texto">
+                            <label for="dimensiones_tipo">Medida del area</label>
+                            <select name="dimensiones_tipo" id="" class="input-entrada-texto">
+                                <option value="Mts²" <?php if ($propiedad['dimensiones_tipo'] == "Mts²") {
+                                                        echo "selected";
+                                                    } ?>>Mts²</option>
+                                <option value="Fanegadas" <?php if ($propiedad['dimensiones_tipo'] == "Fanegadas") {
+                                                        echo "selected";
+                                                    } ?>>Fanegadas</option>
+                                <option value="Hectareas" <?php if ($propiedad['dimensiones_tipo'] == "Hectareas") {
+                                                        echo "selected";
+                                                    } ?>>Hectareas</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="fila">
+                        <div class="box">
+                            <label for="precio">Precio (Alquiler o Venta)</label>
+                            <input type="text" name="precio" value="<?php echo $propiedad['precio'] ?>" class="input-entrada-texto">
+                        </div>
+
                         <div class="box">
                             <label for="moneda">Moneda</label>
                             <input type="text" name="moneda" class="input-entrada-texto" required value="<?php echo $propiedad['moneda'] ?>">
@@ -534,16 +513,16 @@ if (isset($_POST['actualizar'])) {
                     <hr>
                     <div class="fila">
                         <div class="box">
-                            <label for="pais"> Seleccione país de la Propiedad</label>
-                            <select name="pais" id="" onchange="muestraselect(this.value)" class="input-entrada-texto">
-                                <?php while ($row = mysqli_fetch_assoc($resultado_paises)) : ?>
-                                    <?php if ($row['id'] == $propiedad['pais']) : ?>
+                            <label for="departamento"> Seleccione país de la Propiedad</label>
+                            <select name="departamento" id="" onchange="muestraselect(this.value)" class="input-entrada-texto">
+                                <?php while ($row = mysqli_fetch_assoc($resultado_departamentos)) : ?>
+                                    <?php if ($row['id'] == $propiedad['departamento']) : ?>
                                         <option value="<?php echo $row['id'] ?>" selected>
-                                            <?php echo $row['nombre_pais'] ?>
+                                            <?php echo $row['nombre_departamento'] ?>
                                         </option>
                                     <?php else : ?>
                                         <option value="<?php echo $row['id'] ?>">
-                                            <?php echo $row['nombre_pais'] ?>
+                                            <?php echo $row['nombre_departamento'] ?>
                                         </option>
                                     <?php endif ?>
                                 <?php endwhile ?>
@@ -603,6 +582,23 @@ if (isset($_POST['actualizar'])) {
                     <input type="submit" value="Actualizar Datos" name="actualizar" class="btn-accion">
 
                 </form>
+
+                <?php if (isset($estado)) : ?>
+                    <script>
+                        Swal.fire({
+                            icon: '<?php echo $estado; ?>',
+                            title: '<?php echo $estado == 'success' ? "¡Éxito!" : "¡Error!"; ?>',
+                            text: '<?php echo $mensaje; ?>',
+                            showConfirmButton: false,
+                            timer: 2500
+                        }).then(() => {
+                            <?php if ($estado == 'success') : ?>
+                                window.location.href = 'listado-propiedades.php';
+                            <?php endif; ?>
+                        });
+                    </script>
+                <?php endif ?>
+
             </div>
         </div>
 

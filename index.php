@@ -31,18 +31,104 @@ $estado = isset($_GET['estado']) ? $_GET['estado'] : 'Venta';
             <div class="box-interior">
                 <p>¿Dónde quieres comprar?</p>
                 <form action="propiedades.php" method="get">
-                    <input type="text" name="busqueda" id="busqueda" placeholder="Busca por ubicación... " class="input-buscar" value="<?php echo htmlspecialchars($busqueda); ?>" oninput="convertirAMinusculas(this)">
+                    <div class="contenedor-botones items-center">
+                        <!-- Filtro de Ciudad -->
+                        <div class="filtro">
+                            <div class="select-btn select-btn-filtro">
+                                <span class="btn-text">Ubicación</span>
+                                <span class="arrow-dwn"><i class="fa-solid fa-chevron-down"></i></span>
+                            </div>
+                            <div class="list-items list-items-filtro">
+                                <?php while ($row = mysqli_fetch_assoc($result_ciudades)) : ?>
+                                    <div class="item item-filtro">
+                                        <input type="checkbox" name="ciudad[]" value="<?php echo $row['id']; ?>" class="checkbox">
+                                        <span class="item-text"><?php echo $row['nombre_ciudad']; ?></span>
+                                    </div>
+                                <?php endwhile; ?>
+                            </div>
+                        </div>
 
-                    <div class="estado">
-                        <span>
-                            <input type="radio" value="Proyecto" name="estado" <?php echo ($estado == 'Proyecto') ? 'checked' : ''; ?>> Proyecto
-                        </span>
-                        <span>
-                            <input type="radio" value="Venta" name="estado" <?php echo ($estado == 'Venta') ? 'checked' : ''; ?>> Venta
-                        </span>
+                        <!-- Filtro de Tipo de Propiedad -->
+                        <div class="filtro">
+                            <div class="select-btn select-btn-filtro">
+                                <span class="btn-text">Tipo de propiedad</span>
+                                <span class="arrow-dwn"><i class="fa-solid fa-chevron-down"></i></span>
+                            </div>
+                            <div class="list-items list-items-filtro">
+                                <?php while ($row = mysqli_fetch_assoc($result_tipos)) : ?>
+                                    <div class="item item-filtro">
+                                        <input type="checkbox" name="tipo[]" value="<?php echo $row['id']; ?>" class="checkbox">
+                                        <span class="item-text"><?php echo $row['nombre_tipo']; ?></span>
+                                    </div>
+                                <?php endwhile; ?>
+                            </div>
+                        </div>
+
+                        <!-- Filtro de Estado -->
+                        <div class="filtro">
+                            <div class="select-btn select-btn-filtro">
+                                <span class="btn-text">Tipo ubicacion</span>
+                                <span class="arrow-dwn"><i class="fa-solid fa-chevron-down"></i></span>
+                            </div>
+                            <div class="list-items list-items-filtro">
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="estado[]" value="campestre" id="campestre" class="checkbox">
+                                    <span class="item-text">Campestre</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="estado[]" value="urbano" id="urbano" class="checkbox">
+                                    <span class="item-text">Urbano</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filtro de Más Filtros -->
+                        <!-- <div class="filtro">
+                            <div class="select-btn select-btn-filtro">
+                                <span class="btn-text">Más filtros</span>
+                                <span class="arrow-dwn"><i class="fa-solid fa-chevron-down"></i></span>
+                            </div>
+                            <div class="list-items list-items-filtro">
+                                <div class="filtro-titulo"><b>Habitaciones</b></div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="habitaciones[]" value="1" class="checkbox">
+                                    <span class="item-text">1</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="habitaciones[]" value="2" class="checkbox">
+                                    <span class="item-text">2</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="habitaciones[]" value="3" class="checkbox">
+                                    <span class="item-text">3</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="habitaciones[]" value="4" class="checkbox">
+                                    <span class="item-text">4+</span>
+                                </div>
+
+                                <div class="filtro-titulo"><b>Baños</b></div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="banos[]" value="1" class="checkbox">
+                                    <span class="item-text">1</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="banos[]" value="2" class="checkbox">
+                                    <span class="item-text">2</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="banos[]" value="3" class="checkbox">
+                                    <span class="item-text">3</span>
+                                </div>
+                                <div class="item item-filtro">
+                                    <input type="checkbox" name="banos[]" value="4" class="checkbox">
+                                    <span class="item-text">4+</span>
+                                </div>
+                            </div>
+                        </div> -->
                     </div>
 
-                    <input type="submit" value="Buscar" name="buscar">
+                    <input class="btn-buscar-filtro" type="submit" value="Buscar" name="buscar">
                 </form>
             </div>
         </div>
@@ -60,5 +146,6 @@ $estado = isset($_GET['estado']) ? $_GET['estado'] : 'Venta';
 </body>
 
 <script src="script.js"></script>
+<script src="filtros-dropdown.js"></script>
 
 </html>

@@ -35,7 +35,7 @@ $rol = $_SESSION['rol_id'];
                             Dashboard
                         </a>
                     </li>
-
+                    <hr>
                     <li id="link-add-propiedad">
                         <a href="add-propiedad.php">
                             <i class="fa-solid fa-building"></i>
@@ -68,17 +68,17 @@ $rol = $_SESSION['rol_id'];
 
                     <hr>
 
-                    <li id="link-add-pais">
-                        <a href="add-pais.php">
+                    <li id="link-add-departamento">
+                        <a href="add-departamento.php">
                             <i class="fa-solid fa-earth-americas"></i>
-                            Nuevo Pais
+                            Nuevo Departamento
                         </a>
                     </li>
 
-                    <li id="link-listado-paises">
-                        <a href="listado-paises.php">
+                    <li id="link-listado-departamentos">
+                        <a href="listado-departamento.php">
                             <i class="fa-solid fa-list"></i>
-                            Listado de Paises
+                            Listado de Departamento
                         </a>
                     </li>
 
@@ -95,22 +95,6 @@ $rol = $_SESSION['rol_id'];
                         <a href="listado-ciudades.php">
                             <i class="fa-solid fa-list"></i>
                             Listado de Ciudades
-                        </a>
-                    </li>
-
-                    <hr>
-
-                    <li id="link-add-ciudad">
-                        <a href="add-departamentos.php">
-                            <i class="fa-solid fa-location-dot"></i>
-                            Nuevo Departameto
-                        </a>
-                    </li>
-
-                    <li id="link-listado-ciudades">
-                        <a href="listado-departamentos.php">
-                            <i class="fa-solid fa-list"></i>
-                            Listado Departamentos
                         </a>
                     </li>
 

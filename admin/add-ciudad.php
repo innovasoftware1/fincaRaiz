@@ -2,7 +2,7 @@
 
 include("conexion.php");
 
-$query = "SELECT * FROM paises";
+$query = "SELECT * FROM departamentos";
 
 $resultado = mysqli_query($conn, $query);
 
@@ -57,13 +57,14 @@ if (isset($_POST['agregar'])) {
                 <div class="box-nuevo-tipo">
                     <h3>Agregar Nueva Ciudad</h3>
                     <hr>
+                    <br>
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 
-                        <label for="pais">Seleccione el país</label>
+                        <label for="pais"><b>Seleccione el país</b></label>
                         <select name="pais" id="select">
                             <?php while ($row = mysqli_fetch_assoc($resultado)) : ?>
                                 <option value="<?php echo $row['id'] ?>">
-                                    <?php echo $row['nombre_pais'] ?>
+                                    <?php echo $row['nombre_departamento'] ?>
                                 </option>
                             <?php endwhile ?>
                         </select>

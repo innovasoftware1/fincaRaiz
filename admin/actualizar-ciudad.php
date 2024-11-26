@@ -8,18 +8,18 @@ $query = "SELECT * FROM ciudades WHERE id='$id_ciudad'";
 $result = mysqli_query($conn, $query);
 $ciudad = mysqli_fetch_assoc($result);
 
-//obtener los paises
-$query = "SELECT * FROM paises";
-$resultado_paises = mysqli_query($conn, $query);
+//obtener los departamentos
+$query = "SELECT * FROM departamentos";
+$resultado_departamentos = mysqli_query($conn, $query);
 
 if (isset($_GET['modificar'])) {
     include("conexion.php");
 
     $id = $_GET['id'];
-    $id_pais = $_GET['pais'];
+    $id_departamento = $_GET['departamento'];
     $nombre_ciudad = $_GET['nombre_ciudad'];
 
-    $query = "UPDATE ciudades SET id_pais='$id_pais', nombre_ciudad='$nombre_ciudad' WHERE id='$id'";
+    $query = "UPDATE ciudades SET id_departamento='$id_departamento', nombre_ciudad='$nombre_ciudad' WHERE id='$id'";
 
     if (mysqli_query($conn, $query)) { 
         $mensaje = "La ciudad se actualizó correctamente";
@@ -58,18 +58,19 @@ if (isset($_GET['modificar'])) {
                     <h3>Actualizar Ciudad</h3>
                     <hr>
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get">
-                        <label for="pais">Seleccione el pais</label>
+                        <br>
+                        <label for="departamento"><b>Seleccione el departamento</b></label>
                         <input type="hidden" name="id" value="<?php echo $ciudad['id'] ?>">
 
-                        <select name="pais" class="input-entrada-texto">
-                            <?php while ($row = mysqli_fetch_assoc($resultado_paises)) : ?>
-                                <?php if ($row['id'] == $ciudad['id_pais']) : ?>
+                        <select name="departamento" class="input-entrada-texto">
+                            <?php while ($row = mysqli_fetch_assoc($resultado_departamentos)) : ?>
+                                <?php if ($row['id'] == $ciudad['id_departamento']) : ?>
                                     <option value="<?php echo $row['id'] ?>" selected>
-                                        <?php echo $row['nombre_pais'] ?>
+                                        <?php echo $row['nombre_departamento'] ?>
                                     </option>
                                 <?php else : ?>
                                     <option value="<?php echo $row['id'] ?>">
-                                        <?php echo $row['nombre_pais'] ?>
+                                        <?php echo $row['nombre_departamento'] ?>
                                     </option>
                                 <?php endif ?>
                             <?php endwhile ?>

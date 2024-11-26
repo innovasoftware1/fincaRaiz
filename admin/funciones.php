@@ -44,13 +44,13 @@ function agregarNuevoTipoDePropiedad($tipo){
     return $mensaje;
 }
 
-function agregarNuevoPais($pais){
+function agregarNuevoDepartamento($Departamento){
     include("conexion.php");
-    $query = "INSERT INTO paises (id, nombre_pais)
-    VALUES (NULL, '$pais')";
+    $query = "INSERT INTO departamentos (id, nombre_departamento)
+    VALUES (NULL, '$Departamento')";
 
     if (mysqli_query($conn, $query)) {
-        $mensaje = "Pais agregado correctamente";
+        $mensaje = "Departamento agregado correctamente";
     } else {
         $mensaje = "No se pudo insertar en la BD" . mysqli_errno($conn);
     }

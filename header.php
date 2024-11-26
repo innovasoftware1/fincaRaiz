@@ -2,7 +2,8 @@
     <header>
         <div class="logo">
             <a href="index.php">
-                <h1><i class="fa-solid fa-house-laptop"></i>FincaRaizSinComisiones</h1>
+                <!-- <h1><i class="fa-solid fa-house-laptop"></i>FincaRaizSinComisiones</h1> -->
+                <img class="img-log" src="img/logo.png" alt="">
             </a>
         </div>
 
@@ -13,9 +14,9 @@
             <!-- <a href="index.php">Inicio</a> -->
             <a href="propiedades.php">Propiedades</a>
             <a href="#">Noticias</a>
-            <a href="contacto.php">Contacto</a>
-            <span>|</span>
-            <a href="admin/login.php">Ingresar</a>
+            <a href="contacto.php">¿Quieres vender?</a>
+            <!-- <span>|</span>
+            <a href="admin/login.php">Ingresar</a> -->
         </nav>
 
         <!-- <div class="info-contacto">
@@ -36,3 +37,7 @@
         </div> -->
     </header>
 </div>
+
+<script>
+    
+</script>

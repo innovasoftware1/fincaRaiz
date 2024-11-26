@@ -1,10 +1,10 @@
 <?php
 
 include("conexion.php");
-$pais = $_GET['c'];
+$departamento = $_GET['c'];
 echo 
 
-$query = "SELECT * FROM ciudades WHERE id_pais='$pais'";
+$query = "SELECT * FROM ciudades WHERE id_departamento='$departamento'";
 
 $resultado_ciudades = mysqli_query($conn, $query);
 

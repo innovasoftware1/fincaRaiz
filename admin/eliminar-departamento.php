@@ -9,9 +9,9 @@ if (!$_SESSION['usuarioLogeado']) {
 if (isset($_GET['id'])) {
     include("conexion.php");
 
-    $idPais = mysqli_real_escape_string($conn, $_GET['id']);
+    $idDepartamento = mysqli_real_escape_string($conn, $_GET['id']);
 
-    $query = "DELETE FROM paises WHERE id = '$idPais'";
+    $query = "DELETE FROM departamentos WHERE id = '$idDepartamento'";
 
     if (mysqli_query($conn, $query)) {
         echo json_encode(array("status" => "success"));

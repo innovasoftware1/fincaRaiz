@@ -33,14 +33,14 @@ function obtenerFotosGaleria($id_propiedad)
     return $resultado_fotos;
 }
 
-function obtenerPais($id_pais)
+function obtenerDepartamentos($id_departamento)
 {
     include("conexion.php");
-    $query = "SELECT * FROM paises WHERE id='$id_pais'";
+    $query = "SELECT * FROM departamentos WHERE id='$id_departamento'";
 
-    $resultado_pais = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($resultado_pais);
-    return $row['nombre_pais'];
+    $resultado_departamento = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($resultado_departamento);
+    return $row['nombre_departamento'];
 }
 
 function obtenerCiudad($id_ciudad)
@@ -86,11 +86,11 @@ function obtenerCiudad($id_ciudad)
                     <h3>Descripción de la propiedad</h3>
                     <table class="descripcion">
                         <tr>
-                            <td>ID de la Propiedad</td>
+                            <td>Cedula del propietario</td>
                             <td><?php echo $propiedad['id'] ?></td>
                         </tr>
                         <tr>
-                            <td>Título de la Propiedad:</td>
+                            <td>Nombre de la Propiedad:</td>
                             <td> <?php echo $propiedad['titulo'] ?> </td>
                         </tr>
 
@@ -105,7 +105,7 @@ function obtenerCiudad($id_ciudad)
                         </tr>
 
                         <tr>
-                            <td>Elija estado de la propiedad</label></td>
+                            <td>Clasificacion</label></td>
                             <td> <?php echo $propiedad['estado'] ?> </td>
                         </tr>
 
@@ -115,18 +115,18 @@ function obtenerCiudad($id_ciudad)
                         </tr>
 
                         <tr>
-                            <td>Habitaciones</label></td>
+                            <td>No. Habitaciones</label></td>
                             <td> <?php echo $propiedad['habitaciones'] ?> </td>
                         </tr>
 
                         <tr>
-                            <td>Baños</td>
+                            <td>No. Baños</td>
 
                             <td> <?php echo $propiedad['banios'] ?> </td>
                         </tr>
 
                         <tr>
-                            <td>Pisos</td>
+                            <td>No. Pisos</td>
                             <td> <?php echo $propiedad['pisos'] ?> </td>
                         </tr>
 
@@ -137,7 +137,7 @@ function obtenerCiudad($id_ciudad)
 
                         <tr>
                             <td>Area</td>
-                            <td> <?php echo $propiedad['dimensiones'] ?> </td>
+                            <td> <?php echo $propiedad['dimensiones'] ?> <?php echo $propiedad['dimensiones_tipo'] ?></td>
                         </tr>
 
                         <tr>
@@ -171,7 +171,7 @@ function obtenerCiudad($id_ciudad)
                         </tr>
 
                         <tr>
-                            <td>Precio (Alquiler o Venta)</td>
+                            <td>Precio (Venta)</td>
                             <td> <?php echo $propiedad['moneda'] . " " . $propiedad['precio'] ?> </td>
                         </tr>
                     </table>
@@ -236,8 +236,8 @@ function obtenerCiudad($id_ciudad)
 
                     <table class="descripcion">
                         <tr class="fila">
-                            <td><label for="pais">Pais</td>
-                            <td> <?php echo obtenerPais($propiedad['pais']) ?> </td>
+                            <td><label for="departamento">Departamento</td>
+                            <td> <?php echo obtenerDepartamentos($propiedad['departamento']) ?> </td>
                         </tr>
                         <tr class="fila">
                             <td>Ciudad</td>

@@ -1,19 +1,19 @@
 <?php
 include("conexion.php");
-$id_pais = $_GET['id'];
+$id_departamento = $_GET['id'];
 
-$query = "SELECT * FROM paises WHERE id='$id_pais'";
+$query = "SELECT * FROM departamentos WHERE id='$id_departamento'";
 
 $result = mysqli_query($conn, $query);
-$pais = mysqli_fetch_assoc($result);
+$departamento = mysqli_fetch_assoc($result);
 
 if (isset($_GET['modificar'])) {
     include("conexion.php");
 
     $id = $_GET['id'];
-    $nombre_pais = $_GET['nombre_pais'];
+    $nombre_departamento = $_GET['nombre_departamento'];
 
-    $query = "UPDATE paises SET nombre_pais='$nombre_pais' WHERE id='$id'";
+    $query = "UPDATE departamentos SET nombre_departamento='$nombre_departamento' WHERE id='$id'";
 
     if (mysqli_query($conn, $query)) {
         $mensaje = "El país se actualizó correctamente";
@@ -45,16 +45,16 @@ if (isset($_GET['modificar'])) {
         <?php include("contenedor-menu.php"); ?>
 
         <div class="contenedor-principal">
-            <div id="nuevo-pais">
-                <h2>Actualizar Pais</h2>
+            <div id="nuevo-departamento">
+                <h2>Actualizar Departamento</h2>
                 <hr>
 
                 <div class="box-nuevo-tipo">
-                    <h3>Actualizar Pais</h3>
+                    <h3>Actualizar Departamento</h3>
                     <hr>
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="get">
-                        <input type="hidden" name="id" value="<?php echo $pais['id'] ?>"> 
-                        <input type="text" name="nombre_pais" value="<?php echo $pais['nombre_pais'] ?>" placeholder="Nombre del pais" required>
+                        <input type="hidden" name="id" value="<?php echo $departamento['id'] ?>"> 
+                        <input type="text" name="nombre_departamento" value="<?php echo $departamento['nombre_departamento'] ?>" placeholder="Nombre del departamento" required>
                         <input type="submit" name="modificar" value="Modificar" class="btn-accion">
                     </form>
                 </div>
@@ -74,7 +74,7 @@ if (isset($_GET['modificar'])) {
             allowOutsideClick: false 
         }).then(() => {
             <?php if ($estado == 'success') : ?>
-                window.location.href = 'listado-paises.php'; 
+                window.location.href = 'listado-departamentos.php'; 
             <?php endif; ?>
         });
     <?php endif; ?>

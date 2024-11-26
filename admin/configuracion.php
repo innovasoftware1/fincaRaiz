@@ -24,7 +24,7 @@ if (isset($_POST['guardar'])) {
     $twitter = $_POST['twitter'];
     $tipo_visualizacion_propiedades = $_POST['tipo_visualizacion_propiedades'];
     $user = $_POST['user'];
-    $password = $_POST['password'];
+    $telefono_admin = $_POST['telefono_admin'];
     $email_administrador = $_POST['email_administrador'];
 
     $query = "UPDATE configuracion SET
@@ -44,7 +44,7 @@ if (isset($_POST['guardar'])) {
      twitter='$twitter',
      tipo_visualizacion_propiedades='$tipo_visualizacion_propiedades',
      user = '$user',
-     password = '$password',
+     telefono_admin = '$telefono_admin',
      email_administrador = '$email_administrador'
      WHERE id=1";
 
@@ -66,7 +66,7 @@ function obtenerConfiguracion()
 
     if ($row['total'] == '0') {
         echo "Valor" . $row['total'];
-        $query = "INSERT INTO configuracion (id,user,password)
+        $query = "INSERT INTO configuracion (id,user,telefono_admin)
         VALUES (NULL, 'admin', 'admin')";
 
         if (mysqli_query($conn, $query)) { 
@@ -287,8 +287,8 @@ $resultado_propiedades = ObtenerTodasLasPropiedades();
                         <label for="user">Nombre de usuario</label>
                         <input type="text" value="<?php echo $config['user'] ?>" placeholder="Nombre de usuario" name="user" class="input-entrada-texto" required>
 
-                        <label for="password">Password</label>
-                        <input type="text" value="<?php echo $config['password'] ?>" placeholder="Contraseña" name="password" class="input-entrada-texto" required>
+                        <label for="telefono_admin">Movil Administrador</label>
+                        <input type="text" value="<?php echo $config['telefono_admin'] ?>" placeholder="Contraseña" name="telefono_admin" class="input-entrada-texto" required>
 
                         <label for="email_administrador">Correo electrónico del administrador</label>
                         <input type="email" value="<?php echo $config['email_administrador'] ?>" placeholder="Correo Electrínico" name="email_administrador" class="input-entrada-texto" required>

@@ -13,13 +13,13 @@ function obtenerTodasLasCiudades()
     return $result;
 }
 
-function obtenerPais($id_pais)
+function obtenerDepartamento($id_departamento)
 {
     include("conexion.php");
-    $query = "SELECT * FROM paises WHERE id='$id_pais'";
-    $resultado_pais = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($resultado_pais);
-    return $row['nombre_pais'];
+    $query = "SELECT * FROM departamentos WHERE id='$id_departamento'";
+    $resultado_departamento = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($resultado_departamento);
+    return $row['nombre_departamento'];
 }
 
 $result = obtenerTodasLasCiudades();
@@ -45,15 +45,23 @@ $result = obtenerTodasLasCiudades();
         <?php include("contenedor-menu.php"); ?>
 
         <div class="contenedor-principal">
-            <div id="listado-paises">
+            <div id="listado-departamentos">
                 <h2>Listado de Ciudades</h2>
                 <hr>
 
                 <div class="contenedor-tabla">
-                    <table class="listados">
+                    <!-- Formulario de búsqueda -->
+                    <div class="form-busqueda">
+                        <label for="">Filtro de Busqueda</label>
+                        <div class="input-container">
+                            <input type="text" id="myInput" placeholder="Buscar por nombre ciudad..." class="input-buscar">
+                        </div>
+                    </div>
+                    <!-- Tabla de propiedades -->
+                    <table class="listados" id="myTable">
                         <tr>
                             <th>#ID</th>
-                            <th>Nombre del Pais</th>
+                            <th>Depart.</th>
                             <th>Nombre de la Ciudad</th>
                             <th>Acciones</th>
                         </tr>
@@ -61,7 +69,7 @@ $result = obtenerTodasLasCiudades();
                         <?php while ($ciudad = mysqli_fetch_assoc($result)) : ?>
                             <tr>
                                 <td> <?php echo $ciudad['id'] ?></td>
-                                <td> <?php echo obtenerPais($ciudad['id_pais']) ?></td>
+                                <td> <?php echo obtenerDepartamento($ciudad['id_departamento']) ?></td>
                                 <td> <?php echo $ciudad['nombre_ciudad'] ?></td>
                                 <td>
                                     <form action="actualizar-ciudad.php" method="get" class="form-acciones" style="display:inline;">
@@ -80,46 +88,59 @@ $result = obtenerTodasLasCiudades();
     </div>
 
     <script>
-    $('#link-listado-ciudades').addClass('pagina-activa');
+        $('#link-listado-ciudades').addClass('pagina-activa');
 
-    function eliminarCiudad(idCiudad) {
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: '¡Esta ciudad será eliminada permanentemente!',
-            icon: 'warning',
-            showCancelButton: false,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Sí, eliminar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: 'eliminar-ciudad.php',  
-                    type: 'GET',
-                    data: { id: idCiudad },
-                    success: function(response) {
-                        var data = JSON.parse(response);
-                        if (data.status === 'success') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Eliminado!',
-                                text: 'La ciudad ha sido eliminada.',
-                                showConfirmButton: false, 
-                                timer: 3000 
-                            }).then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire('Error', 'Hubo un problema al eliminar la ciudad.', 'error');
+        function eliminarCiudad(idCiudad) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡Esta ciudad será eliminada permanentemente!',
+                icon: 'warning',
+                showCancelButton: false,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'eliminar-ciudad.php',
+                        type: 'GET',
+                        data: {
+                            id: idCiudad
+                        },
+                        success: function(response) {
+                            var data = JSON.parse(response);
+                            if (data.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Eliminado!',
+                                    text: 'La ciudad ha sido eliminada.',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Error', 'Hubo un problema al eliminar la ciudad.', 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire('Error', 'Hubo un error al realizar la solicitud.', 'error');
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire('Error', 'Hubo un error al realizar la solicitud.', 'error');
-                    }
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                 });
-            }
+            });
         });
-    }
-</script>
+    </script>
 
 </body>
 

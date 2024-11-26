@@ -40,7 +40,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                     <h2><?php echo $propiedad['titulo'] ?></h2>
                     <p>
                         <i class="fa-solid fa-location-pin"></i>
-                        <?php echo $propiedad['ubicacion'] . ", " . obtenerCiudad($propiedad['ciudad']) . ", " . obtenerPais($propiedad['pais']) ?>
+                        <?php echo $propiedad['ubicacion'] . ", " . obtenerCiudad($propiedad['ciudad']) . ", " . obtenerDepartamento($propiedad['departamento']) ?>
                     </p>
                     <div class="botones-galeria">
                         <button class="btn-general" onclick="mostrarFotos()">Portada</button>
@@ -85,7 +85,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                         </div>
                         <div class="dato">
                             <span class="header">
-                                <i class="fa-solid fa-clipboard-check"><span>Estado propiedad</span></i> <!-- Ícono de estado -->
+                                <i class="fa-solid fa-clipboard-check"><span>Clasificacion</span></i> <!-- Ícono de estado -->
                             </span>
                             <span class="valor"><?php echo $propiedad['estado'] ?></span>
                         </div>
@@ -97,7 +97,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                         </div>
                         <div class="dato">
                             <span class="header">
-                                <i class="fa-solid fa-bed"><span>Habitaciones</span></i> <!-- Ícono de habitaciones -->
+                                <i class="fa-solid fa-bed"><span>Habts.</span></i> <!-- Ícono de habitaciones -->
                             </span>
                             <span class="valor"><?php echo $propiedad['habitaciones'] ?></span>
                         </div>
@@ -119,7 +119,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                             <span class="header">
                                 <i class="fa-solid fa-ruler-combined"><span>Area</span></i> <!-- Ícono de dimensiones -->
                             </span>
-                            <span class="valor"><?php echo $propiedad['dimensiones'] ?></span>
+                            <span class="valor"><?php echo $propiedad['dimensiones'] ?> <?php echo $propiedad['dimensiones_tipo'] ?></span>
                         </div>
                         <div class="dato">
                             <span class="header">
@@ -137,7 +137,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                             <span class="header">
                                 <i class="fa-solid fa-flag"><span>Departamento</span></i> <!-- Ícono de país -->
                             </span>
-                            <span class="valor"><?php echo obtenerPais($propiedad['pais']) ?></span>
+                            <span class="valor"><?php echo obtenerDepartamento($propiedad['departamento']) ?></span>
                         </div>
                     </div>
 
