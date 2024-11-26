@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3307
--- Tiempo de generación: 20-11-2024 a las 23:06:19
+-- Tiempo de generación: 26-11-2024 a las 14:40:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `ciudades` (
   `id` int(11) NOT NULL,
-  `id_pais` int(11) NOT NULL,
+  `id_departamento` int(11) NOT NULL,
   `nombre_ciudad` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -37,7 +37,7 @@ CREATE TABLE `ciudades` (
 -- Volcado de datos para la tabla `ciudades`
 --
 
-INSERT INTO `ciudades` (`id`, `id_pais`, `nombre_ciudad`) VALUES
+INSERT INTO `ciudades` (`id`, `id_departamento`, `nombre_ciudad`) VALUES
 (1, 1, 'Bogotá'),
 (2, 2, 'Medellín'),
 (3, 2, 'Bello'),
@@ -53,10 +53,7 @@ INSERT INTO `ciudades` (`id`, `id_pais`, `nombre_ciudad`) VALUES
 (13, 5, 'Girardot'),
 (14, 6, 'Bucaramanga'),
 (15, 6, 'Floridablanca'),
-(16, 6, 'Piedecuesta'),
-(17, 7, 'Cartagena'),
-(18, 7, 'Magangué'),
-(19, 7, 'Turbaco');
+(16, 6, 'Piedecuesta');
 
 -- --------------------------------------------------------
 
@@ -82,7 +79,7 @@ CREATE TABLE `configuracion` (
   `twitter` varchar(200) DEFAULT NULL,
   `tipo_visualizacion_propiedades` varchar(1) DEFAULT NULL,
   `user` varchar(50) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
+  `telefono_admin` varchar(20) DEFAULT NULL,
   `email_administrador` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -90,8 +87,31 @@ CREATE TABLE `configuracion` (
 -- Volcado de datos para la tabla `configuracion`
 --
 
-INSERT INTO `configuracion` (`id`, `propiedad1`, `propiedad2`, `propiedad3`, `propiedad4`, `propiedad5`, `propiedad6`, `oficina_central`, `telefono1`, `telefono2`, `email_contacto`, `horarios`, `mapa`, `facebook`, `twitter`, `tipo_visualizacion_propiedades`, `user`, `password`, `email_administrador`) VALUES
-(1, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 'Carrera 25A # 10-60, Bogotà', '(+57) 3102499843', '(+57) 3202005197', 'supata@fincaraizsincomisiones.com', 'Domingo a Domingo de 7:00am a 6:00pm', 'mapa', 'https://www.facebook.com/InnovaPublicidadVisualSAS', 'https://x.com/i/flow/login?redirect_after_login=%2Finnovapvisual', 'p', 'Feldman Rodriguez', '123456', 'gerencia@innovapublicidad.com.co');
+INSERT INTO `configuracion` (`id`, `propiedad1`, `propiedad2`, `propiedad3`, `propiedad4`, `propiedad5`, `propiedad6`, `oficina_central`, `telefono1`, `telefono2`, `email_contacto`, `horarios`, `mapa`, `facebook`, `twitter`, `tipo_visualizacion_propiedades`, `user`, `telefono_admin`, `email_administrador`) VALUES
+(1, 1000215220, 1025154224, 1074268599, 2147483647, 0, 0, 'Carrera 25A # 10-60, Bogotà', '(+57) 3102499843', '(+57) 3202005197', 'supata@fincaraizsincomisiones.com', 'Domingo a Domingo de 7:00am a 6:00pm', 'mapa', 'https://www.facebook.com/InnovaPublicidadVisualSAS', 'https://x.com/i/flow/login?redirect_after_login=%2Finnovapvisual', 'p', 'Feldman Rodriguez', '3112026010', 'gerencia@innovapublicidad.com.co');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `departamentos`
+--
+
+CREATE TABLE `departamentos` (
+  `id` int(11) NOT NULL,
+  `nombre_departamento` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `departamentos`
+--
+
+INSERT INTO `departamentos` (`id`, `nombre_departamento`) VALUES
+(1, 'Bogotá D.C.'),
+(2, 'Antioquia'),
+(3, 'Valle del Cauca'),
+(4, 'Atlántico'),
+(5, 'Cundinamarca'),
+(6, 'Santander');
 
 -- --------------------------------------------------------
 
@@ -110,38 +130,17 @@ CREATE TABLE `fotos` (
 --
 
 INSERT INTO `fotos` (`id`, `id_propiedad`, `nombre_foto`) VALUES
-(118, '2222222222', 'ad197ff62e8db609ad84d974b584ba682da897eb.jpg'),
-(119, '2222222222', 'f3662dd56034a46ddbd5b16a23c6b6873a06bf53.jpg'),
-(120, '2222222222', '8a8f3883b7560d0936d67a9954615f42c4af41b8.jpg'),
-(121, '2222222222', 'dfaa99408daedf162405fdecedbc8e9497c71888.jpg'),
 (122, '3333333333', 'aaeee7302ae9007b117f5cb1965e3d2dae0077f5.jpg'),
 (123, '3333333333', 'ad197ff62e8db609ad84d974b584ba682da897eb.jpg'),
 (124, '3333333333', 'b62d88c3fb84a8a6d7f1586bba1754c6827b831d.jpg'),
-(125, '3333333333', '8a8f3883b7560d0936d67a9954615f42c4af41b8.jpg');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `paises`
---
-
-CREATE TABLE `paises` (
-  `id` int(11) NOT NULL,
-  `nombre_pais` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `paises`
---
-
-INSERT INTO `paises` (`id`, `nombre_pais`) VALUES
-(1, 'Bogotá D.C.'),
-(2, 'Antioquia'),
-(3, 'Valle del Cauca'),
-(4, 'Atlántico'),
-(5, 'Cundinamarca'),
-(6, 'Santander'),
-(7, 'Bolívar');
+(125, '3333333333', '8a8f3883b7560d0936d67a9954615f42c4af41b8.jpg'),
+(126, '3333333333', 'e48f11880bffdfc660cc5df8877dfe68fba1d849.jpg'),
+(127, '3333333333', '1f801e62b558bce90840374b79865c17a87ab4b1.jpg'),
+(128, '3333333333', 'e8ad6ac9a9b2ab84125c99509e8588d138baf1f7.jpg'),
+(129, '3333333333', 'e48f11880bffdfc660cc5df8877dfe68fba1d849.jpg'),
+(130, '3333333333', 'e8ad6ac9a9b2ab84125c99509e8588d138baf1f7.jpg'),
+(131, '3333333333', 'e48f11880bffdfc660cc5df8877dfe68fba1d849.jpg'),
+(132, '3333333333', '1f801e62b558bce90840374b79865c17a87ab4b1.jpg');
 
 -- --------------------------------------------------------
 
@@ -187,7 +186,7 @@ CREATE TABLE `propiedades` (
   `precio` int(11) NOT NULL,
   `moneda` varchar(5) NOT NULL,
   `url_foto_principal` varchar(200) NOT NULL,
-  `pais` int(11) NOT NULL,
+  `departamento` int(11) NOT NULL,
   `ciudad` int(11) NOT NULL,
   `propietario` varchar(100) NOT NULL,
   `telefono_propietario` varchar(50) NOT NULL,
@@ -200,16 +199,19 @@ CREATE TABLE `propiedades` (
   `video_url` text DEFAULT NULL,
   `recorrido_360_url` varchar(300) DEFAULT NULL,
   `permuta` varchar(2) NOT NULL,
-  `ubicacion_url` text NOT NULL
+  `ubicacion_url` text NOT NULL,
+  `dimensiones_tipo` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `propiedades`
 --
 
-INSERT INTO `propiedades` (`id`, `fecha_alta`, `titulo`, `descripcion`, `tipo`, `estado`, `ubicacion`, `habitaciones`, `banios`, `pisos`, `garage`, `dimensiones`, `precio`, `moneda`, `url_foto_principal`, `pais`, `ciudad`, `propietario`, `telefono_propietario`, `agua`, `luz`, `gas`, `internet`, `clima`, `documentos_transferencia`, `video_url`, `recorrido_360_url`, `permuta`, `ubicacion_url`) VALUES
-('2222222222', '2024-11-14', 'Finca de Dios', 'Finca de Dios es un lugar sagrado, rodeado de montañas y campos verdes donde el cielo parece tocar la tierra. En sus tierras crecen frutas y flores que nunca marchitan, y el aire está impregnado de una paz celestial. Los ríos fluyen con aguas cristalinas, y cada rincón de la finca resplandece con una luz suave y dorada. Los habitantes, humildes y sabios, viven en armonía con la naturaleza, cuidando cada ser vivo como un hermano. Es un refugio de calma y espiritualidad, un santuario donde se sienten las bendiciones divinas. Aquí, el tiempo parece detenerse, y todo lo que toca el alma encuentra su propósito.', 4, 'venta', 'Km. 14, vía Grande', '4', '2', '1', 'Si', '10 Hectareas', 210000000, '$', 'fotos/2222222222/finca10.jpg', 1, 1, 'QQQQQQQ', '3216584747', 'Si', 'Si', 'Si', 'No', 'Cálido (24 °C a 30 °C)', 'Escritura pública', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'No', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31814.189459751513!2d-74.4787061553955!3d4.634420977514907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f6de22e174619%3A0x36dd14291f41e841!2sBanco%20Contactar%20-%20La%20Mesa%2C%20Cundinamarca!5e0!3m2!1ses!2sco!4v1730821778447!5m2!1ses!2sco\" width=\"100%\"      height=\"100%\"      style=\"border:0; border-radius: 20px; max-width: 600px; max-height: 500px; margin-top: 20px; box-sizing: border-box;\"  allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>'),
-('3333333333', '2024-11-14', 'Finca la arrocera', 'WWWWWWWWWWWWWWWWWWWWWW', 2, 'venta', 'Calle 135 # 143- 13', '3', '3', '3', 'No', '12mts x 24mts', 128500000, '$', 'fotos/3333333333/nombre6.jpg', 5, 12, 'DDDDDDDDD', '3118285872', 'No', 'No', 'No', 'No', 'Cálido (24 °C a 30 °C)', 'Escritura pública', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'No', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63665.33868870668!2d-74.7050229932351!3d4.203901019642354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3edf334ff57def%3A0x7b0652fd489bdd0!2sPiscilago%20%7C%20Parque%20Acu%C3%A1tico%20y%20%C3%81rea%20de%20Conservaci%C3%B3n!5e0!3m2!1ses!2sco!4v1731941442502!5m2!1ses!2sco\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>');
+INSERT INTO `propiedades` (`id`, `fecha_alta`, `titulo`, `descripcion`, `tipo`, `estado`, `ubicacion`, `habitaciones`, `banios`, `pisos`, `garage`, `dimensiones`, `precio`, `moneda`, `url_foto_principal`, `departamento`, `ciudad`, `propietario`, `telefono_propietario`, `agua`, `luz`, `gas`, `internet`, `clima`, `documentos_transferencia`, `video_url`, `recorrido_360_url`, `permuta`, `ubicacion_url`, `dimensiones_tipo`) VALUES
+('1000215220', '2024-11-21', 'ccdscsdcs', 'sdcdcccsccsccdcccdccccccccccccccccccccaaaaaaaaaaaaaaaaa', 4, 'Urbano', 'la porra', '2', '2', '2', 'Si', '44x3344', 2000000, '$', '', 3, 6, 'juan lOCO', '2222222222', 'No', 'No', 'No', 'No', 'Cálido (24 °C a 30 °C)', 'Escritura pública', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'Si', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31814.189459751513!2d-74.4787061553955!3d4.634420977514907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f6de22e174619%3A0x36dd14291f41e841!2sBanco%20Contactar%20-%20La%20Mesa%2C%20Cundinamarca!5e0!3m2!1ses!2sco!4v1730821778447!5m2!1ses!2sco\" width=\"100%\"      height=\"100%\"      style=\"border:0; border-radius: 20px; max-width: 600px; max-height: 500px; margin-top: 20px; box-sizing: border-box;\"  allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'Mts²'),
+('1025154224', '2024-11-21', 'Finca la arrocera', 'DDDDDDDDDDDDDDDDDDDDD', 4, 'Campestre', 'las cruces', '5', '3', '3', 'No', '2', 2000000, '$', '', 3, 5, 'juan lOCO', '3216354847', 'No', 'No', 'Si', 'Si', 'Páramo (0 °C a 10 °C)', 'Certificado de libertad y tradición', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'Si', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31814.189459751513!2d-74.4787061553955!3d4.634420977514907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f6de22e174619%3A0x36dd14291f41e841!2sBanco%20Contactar%20-%20La%20Mesa%2C%20Cundinamarca!5e0!3m2!1ses!2sco!4v1730821778447!5m2!1ses!2sco\" width=\"100%\"      height=\"100%\"      style=\"border:0; border-radius: 20px; max-width: 600px; max-height: 500px; margin-top: 20px; box-sizing: border-box;\"  allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'Hectareas'),
+('1074268599', '2024-11-21', 'rrrrrrrrrrrrrr', 'rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 2, 'Campestre', 'la filadelfia', '4', '4', '4', 'Si', '44x3344', 100000000, '$', '', 4, 8, 'juan luis guerra', '3112565845', 'Si', 'No', 'No', 'Si', 'Templado (16 °C a 24 °C)', 'Escritura pública', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'Si', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31814.189459751513!2d-74.4787061553955!3d4.634420977514907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f6de22e174619%3A0x36dd14291f41e841!2sBanco%20Contactar%20-%20La%20Mesa%2C%20Cundinamarca!5e0!3m2!1ses!2sco!4v1730821778447!5m2!1ses!2sco\" width=\"100%\"      height=\"100%\"      style=\"border:0; border-radius: 20px; max-width: 600px; max-height: 500px; margin-top: 20px; box-sizing: border-box;\"  allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'Fanegadas'),
+('3333333333', '2024-11-14', 'Finca la arrocera', 'WWWWWWWWWWWWWWWWWWWWWW', 2, 'Urbano', 'Calle 135 # 143- 13', '3', '3', '3', 'No', '12mts x 24mts', 128500000, '$', 'fotos/3333333333/sassas.jpg', 5, 12, 'DDDDDDDDD', '3118285872', 'No', 'No', 'No', 'No', 'Cálido (24 °C a 30 °C)', 'Escritura pública', '<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/7l5SkwfCXUw?si=XMosbLi9YISDgFl3\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>', 'https://salasdeventas.com/vikalanding2//', 'No', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63665.33868870668!2d-74.7050229932351!3d4.203901019642354!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3edf334ff57def%3A0x7b0652fd489bdd0!2sPiscilago%20%7C%20Parque%20Acu%C3%A1tico%20y%20%C3%81rea%20de%20Conservaci%C3%B3n!5e0!3m2!1ses!2sco!4v1731941442502!5m2!1ses!2sco\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'Mts²');
 
 -- --------------------------------------------------------
 
@@ -273,12 +275,11 @@ CREATE TABLE `tipos` (
 
 INSERT INTO `tipos` (`id`, `nombre_tipo`) VALUES
 (1, 'Casa'),
-(2, 'Apartamento'),
-(3, 'Apartaestudio'),
-(4, 'Cabaña'),
-(5, 'Casa Campestre'),
-(6, 'Casa Lote Finca'),
-(11, 'cambuches');
+(2, 'Casa Lote'),
+(3, 'Casa Quinta'),
+(4, 'Lotes'),
+(5, 'Fincas'),
+(6, 'Proyectos');
 
 -- --------------------------------------------------------
 
@@ -336,15 +337,15 @@ ALTER TABLE `configuracion`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `fotos`
+-- Indices de la tabla `departamentos`
 --
-ALTER TABLE `fotos`
+ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `paises`
+-- Indices de la tabla `fotos`
 --
-ALTER TABLE `paises`
+ALTER TABLE `fotos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -405,16 +406,16 @@ ALTER TABLE `configuracion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT de la tabla `fotos`
 --
 ALTER TABLE `fotos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
-
---
--- AUTO_INCREMENT de la tabla `paises`
---
-ALTER TABLE `paises`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT de la tabla `permisos`
