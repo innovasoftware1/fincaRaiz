@@ -143,8 +143,8 @@ $result_propiedades = realizarBusqueda($id_ciudad, $id_tipo, $estado);
 
                                 <!-- Rango de precios (min-max) -->
                                 <div style="margin-bottom: 5px; height: 60px;">
-                                    <input style="height: 30px;" type="number" id="precio_min" placeholder="Valor minimo" oninput="formatearNumero(this)">
-                                    <input style="margin-top: 5px; height: 30px;" type="number" id="precio_max" placeholder="Valor maximo">
+                                    <input style="height: 30px;" type="text" id="precio_min" name="precio_min" placeholder="Valor minimo" value="<?php echo isset($_GET['precio_min']) ? $_GET['precio_min'] : ''; ?>" oninput="formatearNumero(this)" min="0" maxlength="16">
+                                    <input style="margin-top: 5px; height: 30px;" type="text" id="precio_max" name="precio_max" placeholder="Valor maximo" value="<?php echo isset($_GET['precio_max']) ? $_GET['precio_max'] : ''; ?>" oninput="formatearNumero(this)" min="0" maxlength="16">
                                 </div>
                                 <!-- Filtro Habitaciones
                                 <div class="filtro-titulo"><b>Habitaciones</b><hr></div>
@@ -239,8 +239,13 @@ $result_propiedades = realizarBusqueda($id_ciudad, $id_tipo, $estado);
     <script src="filtros-dropdown.js"></script>
     <script>
         function formatearNumero(input) {
-            const valkorSinFormato = input.value.replace(/\D/g, '');
+            // Eliminar todos los caracteres no numéricos
+            const valorSinFormato = input.value.replace(/\D/g, '');
+
+            // Formatear el número agregando puntos
             const valorFormateado = valorSinFormato.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Asignar el valor formateado al input
             input.value = valorFormateado;
         }
     </script>

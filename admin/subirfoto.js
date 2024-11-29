@@ -22,4 +22,4 @@ function handleFileSelect(evt) {
       reader.readAsDataURL(f);
   }
 
-  document.getElementById('foto1').addEventListener('change', handleFileSelect, false);
+  document.getElementById('foto1').addEventListener('change', handleFileSelect, false); 

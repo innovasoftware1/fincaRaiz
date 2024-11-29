@@ -7,7 +7,7 @@ if (!$_SESSION['usuarioLogeado']) {
 
 function obtenerTodasLasPropiedades()
 {
-    include("conexion.php");
+    include("../conexion.php");
     $query = "SELECT * FROM propiedades ORDER BY fecha_alta DESC";
     $result = mysqli_query($conn, $query);
     return $result;
@@ -15,7 +15,7 @@ function obtenerTodasLasPropiedades()
 
 function obtenerTipo($id_tipo)
 {
-    include("conexion.php");
+    include("../conexion.php");
     $query = "SELECT * FROM tipos WHERE id='$id_tipo'";
     $resultado_tipo = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($resultado_tipo);
@@ -35,14 +35,14 @@ $result = obtenerTodasLasPropiedades();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../estilo.css">
     <title>FRSC - Admin</title>
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php include("../header.php"); ?>
     <div id="contenedor-admin">
-        <?php include("contenedor-menu.php"); ?>
+        <?php include("../contenedor-menu.php"); ?>
         <div class="contenedor-principal">
             <div id="listado-propiedades">
                 <h2>Listado de Propiedades</h2>

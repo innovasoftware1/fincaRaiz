@@ -23,6 +23,7 @@ function archivo(evt) {
 
         reader.readAsDataURL(f);
     }
+
 }
 
 document.getElementById('fotos').addEventListener('change', archivo, false);

@@ -3,7 +3,7 @@
     <h2>Sistema Administrativo</h2>
 
     <button id="userBtn" class="user-btn">
-        <img src="../img/admin.svg" alt="Icono de usuario" class="user-icon">
+        <img src="../../img/admin.svg" alt="Icono de usuario" class="user-icon">
     </button>
 </header>
 

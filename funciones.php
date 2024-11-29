@@ -1,5 +1,5 @@
 <?php
-
+    
 function obtenerConfiguracion()
 {
     include("admin/conexion.php");
@@ -63,7 +63,7 @@ function cargarPropiedades($limInferior)
     } else { 
         $query = "SELECT * FROM propiedades WHERE id IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
                   UNION
-                  SELECT * FROM propiedades WHERE id NOT IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
+                  SELECT * FROM propiedades WHERE id NOT IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]') 
                   LIMIT $limInferior, 6";
         $result = mysqli_query($conn, $query);
         return $result;
@@ -162,8 +162,7 @@ function pluralToSingular($word) {
     return $word;
 }
 
-
-function realizarBusqueda($id_ciudad, $id_tipo, $estado)
+function realizarBusqueda($id_ciudad, $id_tipo, $estado, $precio_min = null, $precio_max = null)
 {
     include("admin/conexion.php");
 
@@ -190,12 +189,22 @@ function realizarBusqueda($id_ciudad, $id_tipo, $estado)
     if ($estado) {
         if (is_array($estado)) {
             $estado = "'" . implode("','", array_map(function($item) use ($conn) {
-                return mysqli_real_escape_string($conn, $item);  // Ahora escapamos correctamente
+                return mysqli_real_escape_string($conn, $item);
             }, $estado)) . "'";
             $conditions[] = "estado IN ($estado)";
         } else {
             $conditions[] = "estado = '$estado'";
         }
+    }
+
+    if ($precio_min !== null && $precio_min !== '') {
+        $precio_min = str_replace('.', '', $precio_min);
+        $conditions[] = "precio >= " . (int)$precio_min;
+    }
+
+    if ($precio_max !== null && $precio_max !== '') {
+        $precio_max = str_replace('.', '', $precio_max);
+        $conditions[] = "precio <= " . (int)$precio_max;
     }
 
     $where = implode(' AND ', $conditions);
@@ -205,7 +214,6 @@ function realizarBusqueda($id_ciudad, $id_tipo, $estado)
     return mysqli_query($conn, $query);
 }
 
-
 function obtenerPropiedades()
 {
     include("admin/conexion.php");
@@ -213,3 +221,4 @@ function obtenerPropiedades()
     $result = mysqli_query($conn, $query);
     return $result;
 }
+?>
