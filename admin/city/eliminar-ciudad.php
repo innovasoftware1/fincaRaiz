@@ -2,7 +2,7 @@
 if (isset($_GET['id'])) {
     $idCiudad = $_GET['id'];
 
-    include("conexion.php");
+    include("../conexion.php");
 
     $query = "DELETE FROM ciudades WHERE id='$idCiudad'";
 

@@ -5,15 +5,24 @@ if (!$_SESSION['usuarioLogeado']) {
     header("Location:login.php");
 }
 
-function obtenerTodosLosTipos()
+function obtenerTodasLasCiudades()
 {
-    include("conexion.php");
-    $query = "SELECT * FROM tipos";
+    include("../conexion.php");
+    $query = "SELECT * FROM ciudades";
     $result = mysqli_query($conn, $query);
     return $result;
 }
 
-$result = obtenerTodosLosTipos();
+function obtenerDepartamento($id_departamento)
+{
+    include("../conexion.php");
+    $query = "SELECT * FROM departamentos WHERE id='$id_departamento'";
+    $resultado_departamento = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($resultado_departamento);
+    return $row['nombre_departamento'];
+}
+
+$result = obtenerTodasLasCiudades();
 ?>
 
 <!DOCTYPE html>
@@ -26,45 +35,48 @@ $result = obtenerTodosLosTipos();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../estilo.css">
     <title>FRSC - Admin</title>
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php include("../header.php"); ?>
     <div id="contenedor-admin">
-        <?php include("contenedor-menu.php"); ?>
+        <?php include("../contenedor-menu.php"); ?>
 
         <div class="contenedor-principal">
-            <div id="listado-tipos-propiedades">
-                <h2>Tipos de Propiedades</h2>
+            <div id="listado-departamentos">
+                <h2>Listado de Ciudades</h2>
                 <hr>
+
                 <div class="contenedor-tabla">
                     <!-- Formulario de búsqueda -->
                     <div class="form-busqueda">
                         <label for="">Filtro de Busqueda</label>
                         <div class="input-container">
-                            <input type="text" id="myInput" placeholder="Buscar por nombre tipo propiedad..." class="input-buscar">
+                            <input type="text" id="myInput" placeholder="Buscar por nombre ciudad..." class="input-buscar">
                         </div>
                     </div>
-
+                    <!-- Tabla de propiedades -->
                     <table class="listados" id="myTable">
                         <tr>
                             <th>#ID</th>
-                            <th>Tipo</th>
+                            <th>Depart.</th>
+                            <th>Nombre de la Ciudad</th>
                             <th>Acciones</th>
                         </tr>
 
-                        <?php while ($tipo = mysqli_fetch_assoc($result)) : ?>
+                        <?php while ($ciudad = mysqli_fetch_assoc($result)) : ?>
                             <tr>
-                                <td> <?php echo $tipo['id'] ?></td>
-                                <td> <?php echo $tipo['nombre_tipo'] ?></td>
+                                <td> <?php echo $ciudad['id'] ?></td>
+                                <td> <?php echo obtenerDepartamento($ciudad['id_departamento']) ?></td>
+                                <td> <?php echo $ciudad['nombre_ciudad'] ?></td>
                                 <td>
-                                    <form action="actualizar-tipo-propiedad.php" method="get" class="form-acciones" class="btn-actualizar" style="display:inline;">
-                                        <input type="hidden" name="id" value="<?php echo $tipo['id'] ?>">
+                                    <form action="actualizar-ciudad.php" method="get" class="form-acciones" style="display:inline;">
+                                        <input type="hidden" name="id" value="<?php echo $ciudad['id'] ?>">
                                         <input type="submit" value="Actualizar" name="actualizar">
                                     </form>
-                                    <button class="btn-eliminar" onclick="eliminarTipo(<?php echo $tipo['id'] ?>)">Eliminar</button>
+                                    <button class="btn-eliminar" onclick="eliminarCiudad(<?php echo $ciudad['id'] ?>)">Eliminar</button>
                                 </td>
                             </tr>
                         <?php endwhile ?>
@@ -76,12 +88,12 @@ $result = obtenerTodosLosTipos();
     </div>
 
     <script>
-        $('#link-listado-tipo-propiedades').addClass('pagina-activa');
+        $('#link-listado-ciudades').addClass('pagina-activa');
 
-        function eliminarTipo(idTipo) {
+        function eliminarCiudad(idCiudad) {
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: '¡Este tipo de propiedad será eliminado permanentemente!',
+                text: '¡Esta ciudad será eliminada permanentemente!',
                 icon: 'warning',
                 showCancelButton: false,
                 confirmButtonColor: '#d33',
@@ -89,10 +101,10 @@ $result = obtenerTodosLosTipos();
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: 'eliminar-tipo-propiedad.php',
+                        url: 'eliminar-ciudad.php',
                         type: 'GET',
                         data: {
-                            id: idTipo
+                            id: idCiudad
                         },
                         success: function(response) {
                             var data = JSON.parse(response);
@@ -100,30 +112,18 @@ $result = obtenerTodosLosTipos();
                                 Swal.fire({
                                     icon: 'success',
                                     title: '¡Eliminado!',
-                                    text: 'El tipo de propiedad ha sido eliminado.',
+                                    text: 'La ciudad ha sido eliminada.',
                                     showConfirmButton: false,
                                     timer: 3000
                                 }).then(() => {
                                     location.reload();
                                 });
                             } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Hubo un problema al eliminar el tipo de propiedad.',
-                                    showConfirmButton: false,
-                                    timer: 3000
-                                });
+                                Swal.fire('Error', 'Hubo un problema al eliminar la ciudad.', 'error');
                             }
                         },
                         error: function(xhr, status, error) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Hubo un error al realizar la solicitud.',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
+                            Swal.fire('Error', 'Hubo un error al realizar la solicitud.', 'error');
                         }
                     });
                 }
@@ -141,6 +141,7 @@ $result = obtenerTodosLosTipos();
             });
         });
     </script>
+
 </body>
 
 </html>

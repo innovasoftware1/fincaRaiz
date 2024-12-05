@@ -16,7 +16,9 @@ if (isset($_POST['iniciar'])) {
         $row = mysqli_fetch_assoc($result);
         if ($password == $row['password']) {
             $_SESSION['usuarioLogeado'] = $usuario;
-            $_SESSION['rol_id'] = $row['rol_id']; 
+            $_SESSION['rol_id'] = $row['rol_id'];
+            $_SESSION['usuarioId'] = $row['id'];
+            
             header("Location: index.php");
             exit();
         } else {

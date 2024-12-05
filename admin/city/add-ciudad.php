@@ -1,27 +1,27 @@
 <?php
 
-include("conexion.php");
+include("../conexion.php");
 
 $query = "SELECT * FROM departamentos";
 
 $resultado = mysqli_query($conn, $query);
 
 if (isset($_POST['agregar'])) {
-    include("conexion.php");
+    include("../conexion.php");
 
-    $id_pais = $_POST['pais'];
+    $id_departamento = $_POST['departamento'];
     $ciudad = $_POST['ciudad'];
 
-    $query = "INSERT INTO ciudades (id, id_pais, nombre_ciudad)
-    VALUES (NULL, '$id_pais', '$ciudad')";
+    $query = "INSERT INTO ciudades (id, id_departamento, nombre_ciudad)
+    VALUES ('', '$id_departamento', '$ciudad')";
 
     if (mysqli_query($conn, $query)) {
-        $pais_query = "SELECT nombre_pais FROM paises WHERE id = '$id_pais'";
-        $pais_result = mysqli_query($conn, $pais_query);
-        $pais_row = mysqli_fetch_assoc($pais_result);
-        $nombre_pais = $pais_row['nombre_pais'];
+        $departamento_query = "SELECT nombre_departamento FROM departamentos WHERE id = '$id_departamento'";
+        $departamento_result = mysqli_query($conn, $departamento_query);
+        $departamento_row = mysqli_fetch_assoc($departamento_result);
+        $nombre_departamento = $departamento_row['nombre_departamento'];
 
-        $mensaje = "La ciudad se agregó correctamente al país: $nombre_pais";
+        $mensaje = "La ciudad se agregó correctamente al Departamento: $nombre_departamento";
     } else {
         $mensaje = "No se pudo insertar en la BD: " . mysqli_error($conn);
     }
@@ -39,15 +39,15 @@ if (isset($_POST['agregar'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../estilo.css">
     <title>FRSC - Admin</title>
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php include("../header.php"); ?>
     
     <div id="contenedor-admin">
-        <?php include("contenedor-menu.php"); ?>
+        <?php include("../contenedor-menu.php"); ?>
 
         <div class="contenedor-principal">
             <div id="nueva-ciudad">
@@ -60,8 +60,8 @@ if (isset($_POST['agregar'])) {
                     <br>
                     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 
-                        <label for="pais"><b>Seleccione el país</b></label>
-                        <select name="pais" id="select">
+                        <label for="departamento"><b>Seleccione el departamento</b></label>
+                        <select name="departamento" id="select">
                             <?php while ($row = mysqli_fetch_assoc($resultado)) : ?>
                                 <option value="<?php echo $row['id'] ?>">
                                     <?php echo $row['nombre_departamento'] ?>
@@ -79,9 +79,9 @@ if (isset($_POST['agregar'])) {
                                 title: '¡Ciudad Agregada!',
                                 text: '<?php echo $mensaje; ?>',
                                 showConfirmButton: false,
-                                timer: 3000 
+                                timer: 3000
                             }).then(function() {
-                                window.location.href = 'listado-ciudades.php'; 
+                                window.location.href = 'listado-ciudades.php';
                             });
                         </script>
                     <?php endif; ?>

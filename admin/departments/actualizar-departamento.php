@@ -1,5 +1,5 @@
 <?php
-include("conexion.php");
+include("../conexion.php");
 $id_departamento = $_GET['id'];
 
 $query = "SELECT * FROM departamentos WHERE id='$id_departamento'";
@@ -8,7 +8,7 @@ $result = mysqli_query($conn, $query);
 $departamento = mysqli_fetch_assoc($result);
 
 if (isset($_GET['modificar'])) {
-    include("conexion.php");
+    include("../conexion.php");
 
     $id = $_GET['id'];
     $nombre_departamento = $_GET['nombre_departamento'];
@@ -33,16 +33,16 @@ if (isset($_GET['modificar'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../estilo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>FRSC - Admin</title>
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php include("../header.php"); ?>
     <div id="contenedor-admin">
-        <?php include("contenedor-menu.php"); ?>
+        <?php include("../contenedor-menu.php"); ?>
 
         <div class="contenedor-principal">
             <div id="nuevo-departamento">
@@ -74,8 +74,8 @@ if (isset($_GET['modificar'])) {
             allowOutsideClick: false 
         }).then(() => {
             <?php if ($estado == 'success') : ?>
-                window.location.href = 'listado-departamentos.php'; 
-            <?php endif; ?>
+                window.location.href = 'listado-departamento.php'; 
+            <?php endif; ?> 
         });
     <?php endif; ?>
 </script>

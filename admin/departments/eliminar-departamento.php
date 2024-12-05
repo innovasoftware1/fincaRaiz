@@ -7,7 +7,7 @@ if (!$_SESSION['usuarioLogeado']) {
 }
 
 if (isset($_GET['id'])) {
-    include("conexion.php");
+    include("../conexion.php");
 
     $idDepartamento = mysqli_real_escape_string($conn, $_GET['id']);
 

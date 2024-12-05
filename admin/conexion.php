@@ -1,28 +1,8 @@
- <?php
-
-/* Conexion INNNOVA - Desde Casa. */
-/* $server		="localhost";
-$username	="root";
-$password	="1014274668";
-$bd			="bd_inmobiliaria";
-
-$conn = mysqli_connect($server, $username, $password, $bd);
-
-if(!$conn){
-	die("Conexión fallida:" . mysqli_connect_error());
-}
-
-if(!$conn){
-	die("Conexión fallida:" . mysqli_connect_error());
-} */
-
-
-
-/* Conexion INNNOVA - Desde Innova. */
+<!--
 $server		="localhost:3307";
 $username	="root";
 $password	="clave.innova";
-$bd			="bd_inmobiliaria";
+$bd			="finca_raiz_v1";
 
 $conn = mysqli_connect($server, $username, $password, $bd);
 
@@ -33,5 +13,19 @@ if(!$conn){
 if(!$conn){
 	die("Conexión fallida:" . mysqli_connect_error());
 }
+-->
 
-?> 
+
+<?php
+/* Conexión a la base de datos */
+$server = "localhost:3307"; // Servidor y puerto
+$username = "root";         // Usuario
+$password = "clave.innova";             // Contraseña
+$bd = "finca_raiz_v1";      // Base de datos
+
+$conn = mysqli_connect($server, $username, $password, $bd);
+
+if (!$conn) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+?>

@@ -7,7 +7,7 @@ if (!$_SESSION['usuarioLogeado']) {
 
 function obtenerTodasLasPropiedades()
 {
-    include("conexion.php");
+    include("../conexion.php");
     $query = "SELECT * FROM propiedades ORDER BY fecha_alta DESC";
     $result = mysqli_query($conn, $query);
     return $result;
@@ -15,7 +15,7 @@ function obtenerTodasLasPropiedades()
 
 function obtenerTipo($id_tipo)
 {
-    include("conexion.php");
+    include("../conexion.php");
     $query = "SELECT * FROM tipos WHERE id='$id_tipo'";
     $resultado_tipo = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($resultado_tipo);
@@ -35,14 +35,14 @@ $result = obtenerTodasLasPropiedades();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="../estilo.css">
     <title>FRSC - Admin</title>
 </head>
 
 <body>
-    <?php include("header.php"); ?>
+    <?php include("../header.php"); ?>
     <div id="contenedor-admin">
-        <?php include("contenedor-menu.php"); ?>
+        <?php include("../contenedor-menu.php"); ?>
         <div class="contenedor-principal">
             <div id="listado-propiedades">
                 <h2>Listado de Propiedades</h2>
@@ -76,15 +76,22 @@ $result = obtenerTodasLasPropiedades();
                                 <td> <?php echo $propiedad['ubicacion'] ?></td>
                                 <td> <?php echo $propiedad['fecha_alta'] ?></td>
                                 <td>
-                                    <form action="ver-detalle-propiedad.php" method="get" class="form-acciones">
+                                    <form action="../ver-detalle-propiedad.php" method="get" class="form-acciones">
                                         <input type="hidden" name="id" value="<?php echo $propiedad['id'] ?>">
                                         <input type="submit" value="Ver Detalle" name="detalle" class="btn-detalle">
                                     </form>
+
                                     <form action="actualizar-propiedad.php" method="get" class="form-acciones">
                                         <input type="hidden" name="id" value="<?php echo $propiedad['id'] ?>">
                                         <input type="submit" value="Actualizar" name="actualizar" class="btn-actualizar">
                                     </form>
+                                    <form action="../subproperties/add.php" method="get" class="form-acciones">
+                                        <input type="hidden" name="id" value="<?php echo $propiedad['id'] ?>">
+                                        <input type="submit" value="registrar subpropiedad" name="actualizar" class="btn-actualizar">
+                                    </form>
+
                                     <a href="javascript:void(0);" onclick="confirmarEliminacion(<?php echo $propiedad['id'] ?>)" class="btn-eliminar">Eliminar</a>
+
                                 </td>
                             </tr>
                         <?php endwhile ?>

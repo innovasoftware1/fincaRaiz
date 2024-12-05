@@ -1,6 +1,6 @@
 <?php
 
-function obtenerConfiguracion()
+/* function obtenerConfiguracion()
 {
     include("admin/conexion.php");
     $query = "SELECT COUNT(*) AS total FROM configuracion";
@@ -27,8 +27,8 @@ function obtenerConfiguracion()
         return null;
     }
 
-    return $config;
-}
+    return $config; 
+}*/
 
 function obtenerTodasLasCiudades()
 {
@@ -37,6 +37,26 @@ function obtenerTodasLasCiudades()
     $result = mysqli_query($conn, $query);
     return $result;
 }
+
+function obtenerPrecioPropiedadPorId($id_propiedad) {
+    include("admin/conexion.php");
+
+    $query = "SELECT precio FROM propiedades WHERE id='$id_propiedad'";
+    $resultado = mysqli_query($conn, $query);
+
+    if (!$resultado) {
+        die("Error en la consulta: " . mysqli_error($conn));
+    }
+
+    $propiedad = mysqli_fetch_assoc($resultado);
+
+    if ($propiedad) {
+        return $propiedad['precio'];
+    } else {
+        return "Propiedad no encontrada";
+    }
+}
+
 
 function obtenerTodosLosTipos()
 {
@@ -60,7 +80,7 @@ function cargarPropiedades($limInferior)
         $query = "SELECT * FROM propiedades ORDER BY fecha_alta DESC LIMIT $limInferior, 6";
         $result = mysqli_query($conn, $query);
         return $result;
-    } else { 
+    } else {
         $query = "SELECT * FROM propiedades WHERE id IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
                   UNION
                   SELECT * FROM propiedades WHERE id NOT IN ('$config[propiedad1]', '$config[propiedad2]', '$config[propiedad3]', '$config[propiedad4]', '$config[propiedad5]', '$config[propiedad6]')
@@ -93,7 +113,7 @@ function obtenerCiudad($id_ciudad)
     if ($row) {
         return $row['nombre_ciudad'];
     } else {
-        return "Ciudad no encontrada";  
+        return "Ciudad no encontrada";
     }
 }
 
@@ -108,7 +128,7 @@ function obtenerDepartamento($id_Departamento)
     if ($row) {
         return $row['nombre_departamento'];
     } else {
-        return "País no encontrado";  
+        return "País no encontrado";
     }
 }
 
@@ -129,11 +149,18 @@ function obtenerTipo($id_tipo)
         return "Tipo no proporcionado";
     }
 
-    $id_tipo = trim($id_tipo);
+    // Asegúrate de que $id_tipo sea un número entero
+    $id_tipo = (int)$id_tipo;
+
+    if ($id_tipo <= 0) {
+        return "Tipo no válido";
+    }
+
     $query = "SELECT * FROM tipos WHERE id = ?";
 
     if ($stmt = mysqli_prepare($conn, $query)) {
-        mysqli_stmt_bind_param($stmt, "s", $id_tipo); 
+        // Vincula el parámetro de manera segura
+        mysqli_stmt_bind_param($stmt, "i", $id_tipo); // "i" para integer
 
         mysqli_stmt_execute($stmt);
 
@@ -152,7 +179,9 @@ function obtenerTipo($id_tipo)
     }
 }
 
-function pluralToSingular($word) {
+
+function pluralToSingular($word)
+{
     if (substr($word, -2) == 'es') {
         return substr($word, 0, -2);
     }
@@ -163,7 +192,7 @@ function pluralToSingular($word) {
 }
 
 
-function realizarBusqueda($id_ciudad, $id_tipo, $estado)
+function realizarBusqueda($id_ciudad, $id_tipo, $estado, $precio_min = null, $precio_max = null)
 {
     include("admin/conexion.php");
 
@@ -190,12 +219,22 @@ function realizarBusqueda($id_ciudad, $id_tipo, $estado)
     if ($estado) {
         if (is_array($estado)) {
             $estado = "'" . implode("','", array_map(function($item) use ($conn) {
-                return mysqli_real_escape_string($conn, $item);  // Ahora escapamos correctamente
+                return mysqli_real_escape_string($conn, $item);
             }, $estado)) . "'";
             $conditions[] = "estado IN ($estado)";
         } else {
             $conditions[] = "estado = '$estado'";
         }
+    }
+
+    if ($precio_min !== null && $precio_min !== '') {
+        $precio_min = str_replace('.', '', $precio_min);
+        $conditions[] = "precio >= " . (int)$precio_min;
+    }
+
+    if ($precio_max !== null && $precio_max !== '') {
+        $precio_max = str_replace('.', '', $precio_max);
+        $conditions[] = "precio <= " . (int)$precio_max;
     }
 
     $where = implode(' AND ', $conditions);
@@ -204,6 +243,10 @@ function realizarBusqueda($id_ciudad, $id_tipo, $estado)
 
     return mysqli_query($conn, $query);
 }
+
+
+
+
 
 
 function obtenerPropiedades()
