@@ -4,12 +4,12 @@ include("funciones.php");
 $limInferior = 0;
 $id_ciudad = $_GET['ciudad'] ?? null;
 $id_tipo = $_GET['tipo'] ?? null;
-$estado = isset($_GET['estado']) ? (array)$_GET['estado'] : [];
+$tipoUbicacion = isset($_GET['tipoUbicacion']) ? (array)$_GET['tipoUbicacion'] : [];
 
 $precio_min = isset($_GET['precio_min']) ? $_GET['precio_min'] : null;
 $precio_max = isset($_GET['precio_max']) ? $_GET['precio_max'] : null;
 
-$result_propiedades = realizarBusqueda($id_ciudad, $id_tipo, $estado, $precio_min, $precio_max);
+$result_propiedades = realizarBusqueda($id_ciudad, $id_tipo, $tipoUbicacion, $precio_min, $precio_max);
 
 /* $config = obtenerConfiguracion(); */
 $result_ciudades = obtenerTodasLasCiudades();
@@ -118,11 +118,11 @@ $result_tipos = obtenerTodosLosTipos();
                             </div>
                             <div class="list-items">
                                 <div class="item">
-                                    <input type="checkbox" name="estado[]" value="campestre" id="campestre" <?php echo (in_array('campestre', $estado)) ? 'checked' : ''; ?>>
+                                    <input type="checkbox" name="tipoUbicacion[]" value="campestre" id="campestre" <?php echo (in_array('campestre', $tipoUbicacion)) ? 'checked' : ''; ?>>
                                     <span class="item-text">Campestre</span>
                                 </div>
                                 <div class="item">
-                                    <input type="checkbox" name="estado[]" value="urbano" id="urbano" <?php echo (in_array('urbano', $estado)) ? 'checked' : ''; ?>>
+                                    <input type="checkbox" name="tipoUbicacion[]" value="urbano" id="urbano" <?php echo (in_array('urbano', $tipoUbicacion)) ? 'checked' : ''; ?>>
                                     <span class="item-text">Urbano</span>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@ $result_tipos = obtenerTodosLosTipos();
                     <div class="contenedor-propiedad" onclick="document.getElementById('<?php echo $propiedad['id']; ?>').submit();">
                         <div class="contenedor-img">
                             <img src="<?php echo 'admin/property/' . $propiedad['url_foto_principal']; ?>" alt="">
-                            <div class="estado"><?php echo $propiedad['estado']; ?></div>
+                            <div class="tipoUbicacion"><?php echo $propiedad['tipoUbicacion']; ?></div>
                         </div>
                         <div class="info">
                             <h2><?php echo $propiedad['titulo']; ?></h2>
