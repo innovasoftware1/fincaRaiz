@@ -83,6 +83,7 @@ $totaCiudades = obtenerTotalRegistros('ciudades');
         <div class="contenedor-principal">
             <div id="dashboard">
                 <h2>Dashboard Principal</h2>
+                <h2>BRAYAN ES TONTO</h2>
                 <br>
                 <hr>
                 <div class="contenedor-cajas-info">
