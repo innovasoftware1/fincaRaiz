@@ -192,7 +192,7 @@ function pluralToSingular($word)
 }
 
 
-function realizarBusqueda($id_ciudad, $id_tipo, $estado, $precio_min = null, $precio_max = null)
+function realizarBusqueda($id_ciudad, $id_tipo, $tipoUbicacion, $precio_min = null, $precio_max = null)
 {
     include("admin/conexion.php");
 
@@ -216,14 +216,14 @@ function realizarBusqueda($id_ciudad, $id_tipo, $estado, $precio_min = null, $pr
         }
     }
 
-    if ($estado) {
-        if (is_array($estado)) {
-            $estado = "'" . implode("','", array_map(function($item) use ($conn) {
+    if ($tipoUbicacion) {
+        if (is_array($tipoUbicacion)) {
+            $tipoUbicacion = "'" . implode("','", array_map(function($item) use ($conn) {
                 return mysqli_real_escape_string($conn, $item);
-            }, $estado)) . "'";
-            $conditions[] = "estado IN ($estado)";
+            }, $tipoUbicacion)) . "'";
+            $conditions[] = "tipoUbicacion IN ($tipoUbicacion)";
         } else {
-            $conditions[] = "estado = '$estado'";
+            $conditions[] = "tipoUbicacion = '$tipoUbicacion'";
         }
     }
 
