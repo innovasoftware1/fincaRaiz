@@ -1,10 +1,10 @@
 <?php
-
+include("admin/conexion.php");
 include("funciones.php");
 
 $i = 0;
 
-$config = obtenerConfiguracion();
+/* $config = obtenerConfiguracion(); */
 
 $id_propiedad = $_GET['idPropiedad'];
 
@@ -25,6 +25,22 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="estilo.css">
 </head>
+
+<!-- icono de whatsapp inicio -->
+<a id="whatsapp-link" href="#" target="_blank" class="float">
+    <i class="fab fa-whatsapp my-float"></i>
+</a>
+<div id="tooltip" class="tooltip"><b>¡Contáctanos por WhatsApp!</b></div>
+
+
+<script>
+    let enlaceWhatsApp = document.getElementById('whatsapp-link');
+    let urlPropiedad = window.location.href;
+    let textoWhatsApp = `Quiero%20más%20información%20acerca%20de%20esta%20propiedad:%20${encodeURIComponent(urlPropiedad)}`;
+    enlaceWhatsApp.href = `https://api.whatsapp.com/send?phone=573102499843&text=${textoWhatsApp}`;
+</script>
+
+<!-- icono de whatsapp final -->
 
 <body class="page-publicacion">
     <div class="container">
@@ -48,7 +64,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                         <button class="btn-general" onclick="mostrarVideo()">Video</button>
                     </div>
                     <div class="contenedor-imagen-principal">
-                        <img id="imagen-principal" src="<?php echo "admin/" . $propiedad['url_foto_principal'] ?>" alt="Imagen principal">
+                        <img id="imagen-principal" src="<?php echo "admin/property/" . $propiedad['url_foto_principal'] ?>" alt="Imagen principal">
                     </div>
                     <div id="video-container" style="display: none;">
                         <?php echo $propiedad['video_url'] ?>
@@ -64,7 +80,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                             <div class="slider-wrapper">
                                 <?php $i = 0; ?>
                                 <?php while ($foto = mysqli_fetch_assoc($restul_fotos_galeria)) : ?>
-                                    <img src="<?php echo 'admin/fotos/' . $foto['id_propiedad'] . '/' . $foto['nombre_foto'] ?>" onclick="abrirModal(this, <?php echo $i ?>)" alt="Imagen de galería" class="imagen-galeria">
+                                    <img src="<?php echo 'admin/property/fotos/' . $foto['id_propiedad'] . '/' . $foto['nombre_foto'] ?>" onclick="abrirModal(this, <?php echo $i ?>)" alt="Imagen de galería" class="imagen-galeria">
                                     <?php $i++; ?>
                                 <?php endwhile ?>
                             </div>
@@ -153,6 +169,11 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                         <?php echo $descripcion; ?>
                     </div>
                 </section>
+
+                <!-- sub-propiedades inicio -->
+                
+                <!-- sub-propiedades final -->
+
                 <section class="descripcion">
                     <h3>Datos detallados</h3>
                     <div class="fila">
@@ -166,7 +187,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                             <span class="header">
                                 <i class="fa-solid fa-tint"><span>Agua</span></i> <!-- Ícono de Agua -->
                             </span>
-                            <span class="valor"><?php echo $propiedad['agua'] ?></span>
+                            <!-- <span class="valor"><?php echo $propiedad['agua'] ?></span> -->
                         </div>
                         <div class="dato">
                             <span class="header">
@@ -216,7 +237,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
                 </section>
             </div>
 
-            <div class="fila">
+            <div class="fila content-mp">
                 <div class="maps2">
                     <h3 class="text-center"><b>Ubicación en Maps</b></h3>
                     <hr id="hr-all">
@@ -273,6 +294,7 @@ $restul_fotos_galeria = obtenerFotosGaleria($id_propiedad);
     <script src="script.js"></script>
     <script src="galeria-slider.js"></script>
     <script src="cambio_multimedia.js"></script>
+    <script src="tooltip-whatsapp.js"></script>
 </body>
 
 </html>

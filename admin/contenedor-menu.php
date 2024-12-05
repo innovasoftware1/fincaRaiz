@@ -1,7 +1,6 @@
 <?php
-session_start();
-// Iniciar sesión si no está iniciada
-if (session_status() == PHP_SESSION_NONE) {
+// Verificar si la sesión no está iniciada e iniciarla
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -14,8 +13,10 @@ if (!isset($_SESSION['usuarioLogeado']) || !isset($_SESSION['rol_id'])) {
 // Obtener el rol del usuario
 $rol = $_SESSION['rol_id'];
 
-// Definir una constante para la URL base del proyecto
-define('BASE_URL', 'http://localhost/FincaRaizV1/fincaRaizInnova/');
+// Definir una constante para la URL base del proyecto si no está definida
+if (!defined('BASE_URL')) {
+    define('BASE_URL', 'http://localhost/FincaRaizV1/fincaRaizInnova/');
+}
 ?>
 
 <!DOCTYPE html>
